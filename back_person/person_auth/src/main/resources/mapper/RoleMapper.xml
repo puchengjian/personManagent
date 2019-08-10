@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.person.auth.dao.RoleMapper">
+
+    <sql id="listRoleSql">
+        r.id, r.role_name, r.is_admin admin, r.create_time, r.update_time
+    </sql>
+
+    <select id="listRole" resultType="role">
+        select
+        <include refid="listRoleSql"/>
+        from sys_role r;
+    </select>
+
+    <select id="findRoleById" resultType="role">
+        select
+        <include refid="listRoleSql"/>
+        from sys_role r
+        where id = #{id}
+    </select>
+    <select id="findRoleByUserId" resultType="role">
+        select
+        <include refid="listRoleSql"/>
+        from sys_role r
+        inner join sys_user_role ur on r.id = ur.role_id and ur.user_id = #{userId}
+    </select>
+</mapper>

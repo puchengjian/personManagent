@@ -1,0 +1,128 @@
+$fonts = '思源黑体 CN', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif
+$asideColor = #3a4468 // header部分背景颜色
+$mainBgc = #f0f8f8 // el-main背景色
+$asideBgc = #ffffff // el-aside背景色
+$mainHeight = 60px // 头部主要高度
+// 字体颜色
+$whiteFFF = #ffffff // 白色
+$gray80 = #808080 // 808080灰
+$black33 = #333333 // 333333黑
+// 鼠标滑过
+hoverColor()
+  background-color rgba(211, 229, 253, 0.1)
+  // box-shadow 0px 2px 3px #ccc
+ellipsis() // 字体超过长显示省略号
+  overflow hidden
+  white-space nowrap
+  text-overflow ellipsis
+// 首页
+$indexShadow = 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+// 公共table 顶部按钮
+// 重要标记
+.important
+  font-size 20px
+  margin-left 10px
+  color red
+  vertical-align -webkit-baseline-middle
+.mainer
+  margin-top 20px
+// 公共table 样式
+.el-table
+  thead tr, thead th
+    color #555759
+    height 45px
+    font-size 14px
+    text-align center
+    background-color #d3e5fd
+.el-table
+  tbody td, .el-button--small
+    font-size 14px
+    text-align center
+.el-table td, .el-table th
+  padding 6px 0
+// 公共表格操作按钮样式
+.nav-btn
+  width 100%
+  height 55px
+  line-height 55px
+  text-align center
+  background #fff
+  border-radius 6px
+  box-shadow 0px 1px 2px #ccc
+  cursor pointer
+  margin-bottom 20px
+  span
+    font-size 16px
+    color #3c4569
+    font-weight 500
+    display inline-block
+    width 100%
+    height 60px
+    border-radius 6px
+    transition all 0.3s linear
+    .nav-btn-icon
+      font-size 28px
+      position absolute
+    .nav-btn-icon-back
+      font-size 22px
+      position absolute
+  span:hover
+    hoverColor()
+    transition all 0.3s linear
+// 重置分页样式
+.el-pagination
+  text-align center
+  background #fff
+  position fixed
+  bottom 0
+  left 0
+  right 0
+  z-index 999
+  padding 5px 0
+  .el-pagination__editor.el-input
+    margin 0 10px
+  .el-pagination__total
+    margin-top 1.2px
+    margin-right 0px
+  .el-pagination__sizes
+    margin 0 10px
+    margin-right 15px
+  .el-pager li
+    border 1px solid #ccc
+    border-left none
+  .el-pager li:first-child
+    border-left 1px solid #ccc
+// 公共searchbar 样式
+.content 
+  .search-bar
+    width 100%
+    height 48px
+    line-height 46px
+    background #fff
+    border-radius 6px
+    box-shadow 0px 1px 2px #ccc
+    margin-bottom 15px
+    .btnswiper
+      float right
+      margin-right 10px
+    .search-swiper
+      padding-left 10px
+      float left
+      .search-item
+        display inline-block
+        .el-select
+          font-size 13px
+          width 100px
+// 公共表单图片查看
+.picBox
+  width 80%
+  height 250px
+  margin 0 auto
+  transform translateX(-9%)
+  border 1px solid #dcdfe6
+  border-radius 6px
+  img
+    width 100%
+    height 100%
+.el-menu--popup
+  padding 0 0 0 0
