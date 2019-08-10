@@ -1,0 +1,7 @@
+/vue_student/node_modules/
+vue_student/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.idea
+target/
