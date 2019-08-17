@@ -45,9 +45,9 @@ export const formatRoutes = (routes) => {
       path: path,
       component (resolve) {
         if (component.startsWith('Home')) {
-          require(['../components/' + component + '.vue'], resolve)
+          require(['@/components/' + component + '.vue'], resolve)
         } else if (component.startsWith('Sys')) {
-          require(['../components/system/' + component + '.vue'], resolve)
+          require(['@/components/system/' + component + '.vue'], resolve)
         }
       },
       name: text,

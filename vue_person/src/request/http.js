@@ -28,12 +28,14 @@ axios.interceptors.response.use(data => {
       }, 3000)
       return data
     }
-    if (data.status === 200 && data.data.status !== 200) {
-      Message.error({ message: data.data.msg })
-      return data
-    }
-    if (data.data.msg) {
-      Message.success({ message: data.data.msg })
+    if (data.headers['content-type'].startsWith('application/json')) {
+      if (data.status === 200 && data.data.status !== 200) {
+        Message.error({ message: data.data.msg })
+        return data
+      }
+      if (data.data.msg) {
+        Message.success({ message: data.data.msg })
+      }
     }
   }
   return data

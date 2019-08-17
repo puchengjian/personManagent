@@ -1,3 +1,4 @@
+/* eslint-disable handle-callback-err */
 <template>
   <div class="content">
     <div class="mainer">
@@ -8,59 +9,72 @@
               placeholder="请输入搜索内容"
               size="medium"
               clearable
+              v-model="queryListParam.searchValue"
               suffix-icon="el-icon-search"
               class="input-with-select"
             >
-              <el-select slot="prepend" placeholder="请选择">
-                <el-option label="车牌号" value="plate"></el-option>
-                <el-option label="姓名" value="personName"></el-option>
-                <el-option
-                  label="主入口名称"
-                  value="primaryInDeviceName"
-                ></el-option>
-                <el-option
-                  label="入口值班员"
-                  value="primaryInDutyName"
-                ></el-option>
+              <el-select
+                v-model="queryListParam.searchKey"
+                slot="prepend"
+                placeholder="请选择"
+              >
+                <el-option label="用户名" value="account"></el-option>
+                <el-option label="姓名" value="userName"></el-option>
               </el-select>
             </el-input>
           </div>
         </div>
         <div class="btnswiper">
-          <el-button size="medium" type="primary">
-            导出数据
-          </el-button>
+          <el-button
+            type="primary"
+            v-show="isTable"
+            @click="handleIsSave"
+            size="medium"
+            >添加成员</el-button
+          >
           <el-button
             size="medium"
-            type="danger"
-            v-show="false"
+            :type="isTable ? 'primary' : 'info'"
+            @click="handleIsTable"
+          >
+            {{ isTable ? "导出数据" : "返回列表" }}
+          </el-button>
+          <el-button
+            :type="isTable ? 'danger' : 'primary'"
+            size="medium"
+            v-show="!isTable"
             @click="handleSave"
-            >批量删除</el-button
+            >{{ isTable ? "导出数据" : "保存" }}</el-button
           >
         </div>
       </div>
       <div>
-        <div class="table-content" v-show="true">
-          <el-table :data="tableData" border style="width: 100%">
+        <div class="table-content" v-show="isTable">
+          <el-table :data="dataList" border style="width: 100%">
             <el-table-column type="selection" width="55"> </el-table-column>
-            <el-table-column fixed prop="date" label="日期" width="150">
+            <el-table-column prop="account" label="用户名" width="140">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="120">
+            <el-table-column prop="userName" label="姓名" width="140">
             </el-table-column>
-            <el-table-column prop="province" label="省份" width="120">
+            <el-table-column prop="userAge" label="年龄" width="80">
             </el-table-column>
-            <el-table-column prop="city" label="市区" width="120">
+            <el-table-column prop="phone" label="手机号" width="140">
             </el-table-column>
-            <el-table-column prop="address" label="地址" width="300">
+            <el-table-column prop="email" label="邮箱" width="140">
             </el-table-column>
-            <el-table-column prop="zip" label="邮编" width="120">
+            <el-table-column prop="createTime" label="日期" width="200">
             </el-table-column>
             <el-table-column fixed="right" label="操作">
               <template slot-scope="scope">
-                <el-button @click="handleClick(scope.row)" size="mini"
+                <el-button @click="handleIsEdit(scope.row.id)" size="mini"
                   >编辑</el-button
                 >
-                <el-button type="danger" size="mini">删除</el-button>
+                <el-button
+                  @click="handleDel(scope.row.id)"
+                  type="danger"
+                  size="mini"
+                  >删除</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
@@ -74,49 +88,67 @@
           >
           </el-pagination>
         </div>
-        <div class="add-content" v-show="false">
+
+        <div class="add-content" v-show="!isTable">
           <div class="formbox">
-            <el-form label-position="right" label-width="140px">
-              <el-form-item label="车牌号">
-                <el-input placeholder="如：京A12B45"></el-input>
+            <el-form
+              label-position="right"
+              label-width="140px"
+              :model="editFormData"
+            >
+              <el-form-item label="用户名">
+                <el-input
+                  v-model="editFormData.account"
+                  :disabled="isEdit"
+                  placeholder="如：pzy"
+                ></el-input>
+                <span class="important">*</span>
+              </el-form-item>
+              <el-form-item v-show="!isEdit" label="密码">
+                <el-input
+                  v-model="editFormData.password"
+                  placeholder="如：123456"
+                ></el-input>
                 <span class="important">*</span>
               </el-form-item>
               <el-form-item label="姓名">
-                <el-input :disabled="true" placeholder="如：张三"></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item label="主入口名称">
                 <el-input
-                  :disabled="true"
-                  placeholder="如：东门入口"
+                  v-model="editFormData.userName"
+                  placeholder="如：张三"
                 ></el-input>
                 <span class="important">*</span>
               </el-form-item>
-              <el-form-item label="计费规则">
+              <el-form-item label="年龄">
                 <el-input
-                  :disabled="true"
-                  placeholder="如：东门入口"
+                  v-model="editFormData.userAge"
+                  placeholder="如：18"
                 ></el-input>
                 <span class="important">*</span>
               </el-form-item>
-              <el-form-item label="入场时间">
+              <el-form-item label="手机号">
+                <el-input
+                  v-model="editFormData.phone"
+                  placeholder="如：152xxxx1414"
+                ></el-input>
+                <span class="important">*</span>
+              </el-form-item>
+
+              <el-form-item label="邮箱">
+                <el-input
+                  v-model="editFormData.email"
+                  placeholder="如：152xxxx1414@163.com"
+                ></el-input>
+                <span class="important">*</span>
+              </el-form-item>
+              <el-form-item v-show="isEdit" label="创建时间">
                 <el-date-picker
+                  v-model="editFormData.createTime"
                   type="datetime"
                   :disabled="true"
-                  value-format="timestamp"
                   placeholder="如：2019-01-01 00:01:01"
                 >
                 </el-date-picker>
                 <span class="important">*</span>
-              </el-form-item>
-              <el-form-item label="操作员">
-                <el-input :disabled="true" placeholder="如：张三"></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item class="last-content" label="图片">
-                <div class="picBox">
-                  <img class="inImage" src="" alt="" />
-                </div>
               </el-form-item>
             </el-form>
           </div>
@@ -131,35 +163,115 @@ export default {
   data () {
     return {
       input: '',
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1517 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1519 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1516 弄',
-        zip: 200333
-      }]
+      isTable: true,
+      isEdit: true,
+      dataList: [],
+      editFormData: {},
+      queryListParam: { // 查询列表参数列表
+        searchKey: 'userName',
+        searchValue: '',
+        page: 1,
+        size: 10
+      }
+    }
+  },
+  created () {
+    this.getDataList()
+    this.initEditFormData()
+  },
+  methods: {
+    getDataList () {
+      this.$get('/api/auth/user').then((res) => {
+        this.dataList = res.data
+      }).catch((err) => {
+        this.$message.error(err.msg)
+      })
+    },
+    initEditFormData () {
+      this.editFormData = {
+        plate: '',
+        personName: '',
+        account: '',
+        userName: '',
+        password: '',
+        userAge: 20,
+        phone: '',
+        photo: '',
+        email: '',
+        enabled: true
+      }
+    },
+    async handleIsSave () {
+      this.isTable = false
+      this.isEdit = false
+    },
+    async handleIsEdit (id) {
+      await this.$get('/api/auth/user/' + id).then((res) => {
+        if (res.status === 200) {
+          this.editFormData = res.data
+          this.isTable = false
+          this.isEdit = true
+        }
+      }).catch((err) => {
+        this.$message.error(err.msg)
+      })
+    },
+    async handleIsTable () {
+      if (this.isTable) {
+        await this.$export('/api/auth/user/export').then((res) => {
+          this.$message.success('下载成功~')
+          // eslint-disable-next-line handle-callback-err
+        }).catch((err) => {
+          this.$message.error('下载失败~')
+        })
+        return
+      }
+      this.initEditFormData()
+      this.isTable = !this.isTable
+    },
+    async handleSave () {
+      if (this.isEdit) {
+        this.handleEditSave()
+        return
+      }
+      await this.$post('/api/auth/user', this.editFormData).then((res) => {
+        if (res.status === 200) {
+          this.getDataList()
+          this.isTable = true
+          this.initEditFormData()
+        }
+      }).catch((err) => {
+        this.$message.error(err.msg)
+      })
+    },
+    async handleEditSave () {
+      await this.$put('/api/auth/user', this.editFormData).then((res) => {
+        if (res.status === 200) {
+          this.getDataList()
+          this.isTable = true
+          this.initEditFormData()
+        }
+      }).catch((err) => {
+        this.$message.error(err.msg)
+      })
+    },
+    handleDel (id) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.enterDel(id)
+      }).catch(() => { })
+    },
+    async enterDel (id) {
+      await this.$delete('/api/auth/user/' + id).then((res) => {
+        if (res.status === 200) {
+          this.getDataList()
+        }
+      }).catch((err) => {
+        this.$message.error(err.msg)
+      })
     }
   }
 }

@@ -23,6 +23,11 @@ public interface UserService {
     List<User> listUser();
 
     /**
+     * 查询用户总条数
+     */
+    Integer countUser();
+
+    /**
      * 根据Id查询用户信息
      */
     User findUserById(String id);

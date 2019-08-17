@@ -6,12 +6,14 @@ import com.person.auth.pojo.entity.User;
 import com.person.auth.service.UserService;
 import com.person.constant.HttpConst;
 import com.person.json.SuccessOrFailure;
+import com.person.utils.ExcelUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -32,8 +34,9 @@ public class UserController {
     SuccessOrFailure listUser() {
         try {
             List<User> users = userService.listUser();
+            Integer count = userService.countUser();
 
-            return SuccessOrFailure.SUCCESS(users);
+            return SuccessOrFailure.SUCCESS(users, count);
         } catch (Exception e) {
             log.error("查询全部用户异常:{}", e);
             return SuccessOrFailure.FAILURE;
@@ -105,6 +108,18 @@ public class UserController {
         } catch (Exception e) {
             log.error("删除用户异常:{}", e);
             return SuccessOrFailure.FAILURE;
+        }
+    }
+
+    @GetMapping("/user/export")
+    @ApiOperation(value = "导出excel", response = User.class)
+    void exportUser(HttpServletResponse response) {
+        try {
+            List<User> users = userService.listUser();
+
+            ExcelUtils.exportExcel(users, "用户数据", "用户数据", response, User.class);
+        } catch (Exception e) {
+            log.error("导出excel异常:{}", e);
         }
     }
 

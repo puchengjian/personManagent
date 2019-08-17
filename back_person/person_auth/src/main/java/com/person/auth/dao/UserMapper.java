@@ -19,6 +19,8 @@ public interface UserMapper {
 
     List<User> listUser();
 
+    Integer countUser();
+
     User findUserById(@Param("id") String id);
 
     Integer insertUser(InsertUserReq userReq);

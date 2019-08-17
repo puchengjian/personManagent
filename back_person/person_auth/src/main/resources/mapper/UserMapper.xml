@@ -17,6 +17,11 @@
         select
         <include refid="userSql"/>
         from sys_user
+        order by create_time
+    </select>
+
+    <select id="countUser" resultType="java.lang.Integer">
+        select count(1) from sys_user;
     </select>
 
     <select id="findUserById" resultType="user">
@@ -58,5 +63,6 @@
         delete from sys_user
         where id = #{id}
     </delete>
+
 
 </mapper>
