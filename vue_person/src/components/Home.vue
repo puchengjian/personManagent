@@ -90,7 +90,7 @@ export default {
         this.$message.warning('您未登录,将在三秒后跳转至登录页')
         setTimeout(() => {
           this.$router.push('/login')
-          this.$get('/logout')
+          this.$get('/api/logout')
         }, 3000)
         return false
       }
@@ -103,7 +103,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          _this.$get('/logout')
+          _this.$get('/api/logout')
           _this.$store.commit('logout')
           _this.$router.replace({ path: '/login' })
         }).catch(() => {

@@ -10,8 +10,8 @@ axios.defaults.baseURL = baseURL
 axios.defaults.withCredentials = true
 
 axios.interceptors.request.use(config => {
-  // const token = sessionStorage.getItem('token')
-  // config.headers.Authorization = token
+  const token = sessionStorage.getItem('token')
+  config.headers.token = token
   return config
 }, () => {
   Message.error({ message: '请求超时！' })
@@ -24,7 +24,7 @@ axios.interceptors.response.use(data => {
       sessionStorage.removeItem('token')
       setTimeout(() => {
         router.push('/login')
-        get('/logout')
+        get('/api/logout')
       }, 3000)
       return data
     }
@@ -45,7 +45,7 @@ axios.interceptors.response.use(data => {
     sessionStorage.removeItem('token')
     setTimeout(() => {
       router.push('/login')
-      get('/logout')
+      get('/api/logout')
     }, 3000)
     return false
   } else if (err.response.status !== 200) {

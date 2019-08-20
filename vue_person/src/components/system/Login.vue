@@ -54,9 +54,8 @@ export default {
     login: function () {
       this.loading = true
       var _this = this
-      _this.$post('/login', this.loginForm)
+      _this.$post('/api/login', this.loginForm)
         .then(resp => {
-          _this.loading = false
           if (resp.status === 200) {
             sessionStorage.setItem('token', resp.token)
             this.setCookie()
@@ -64,6 +63,7 @@ export default {
             _this.$router.replace({ path: '/index' })
           }
         })
+      _this.loading = false
     },
     setCookie () { // 配合cookie 检测session
       let date = new Date()
