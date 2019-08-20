@@ -3,7 +3,6 @@ package com.person.auth.shiro;
 import com.person.auth.pojo.entity.User;
 import com.person.auth.service.MenuService;
 import com.person.auth.service.UserService;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;

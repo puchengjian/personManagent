@@ -1,6 +1,6 @@
 spring:
   redis:
     port: 6379
-    password:
+    password: 123456
     timeout: 3600 #请求超时时间
-    host: 127.0.0.1
+    host: inmeyu.com

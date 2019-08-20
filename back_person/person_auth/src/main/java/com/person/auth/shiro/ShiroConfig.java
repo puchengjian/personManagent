@@ -1,5 +1,6 @@
 package com.person.auth.shiro;
 
+import com.person.shiro.ShiroSessionManager;
 import com.person.utils.ShiroLoginFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.mgt.SecurityManager;
@@ -70,10 +71,11 @@ public class ShiroConfig {
 
     @Bean
     public SessionManager sessionManager() {
-        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        ShiroSessionManager sessionManager = new ShiroSessionManager();
         sessionManager.setSessionDAO(redisSessionDAO());
         //解决第一次重定向带jessionId
         sessionManager.setSessionIdUrlRewritingEnabled(false);
+        sessionManager.setSessionIdCookieEnabled(false);
 
         return sessionManager;
     }

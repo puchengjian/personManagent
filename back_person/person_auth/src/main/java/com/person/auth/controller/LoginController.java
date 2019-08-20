@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api(description = "登录管理")
 @Slf4j
+@RequestMapping("/api/person/v1")
 public class LoginController {
 
     @Autowired
@@ -39,7 +40,6 @@ public class LoginController {
             Subject subject = SecurityUtils.getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(loginReq.getAccount(), md5PassWord);
             subject.login(token);
-//            redisService.set(shiroService.getSession().getId() + ":user", shiroService.getUser(), 3600);
         } catch (Exception e) {
             return SuccessOrFailure.FAILURE(HttpConst.UNAUTHORIZED, e.getMessage());
         }
