@@ -2,7 +2,7 @@
   <div>
     <el-container class="home-container">
       <el-header class="home-header">
-        <span class="home_title">系统</span>
+        <span class="home_title">管理系统</span>
         <div style="display: flex;align-items: center;margin-right: 7px">
           <el-badge
             style="margin-right: 30px"
@@ -20,7 +20,7 @@
                 <img
                   v-if="user.photo != ''"
                   :src="user.photo"
-                  style="width: 40px;height: 40px;margin-right: 5px;margin-left: 5px;border-radius: 40px"
+                  style="width: 45px;height: 45px;margin-right: 5px;margin-left: 5px;border-radius: 45px"
                 />
               </i>
             </span>
