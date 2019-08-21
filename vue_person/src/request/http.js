@@ -20,7 +20,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(data => {
   if (data.data != null && data.data !== '') {
     if (data.status === 200 && data.data.status === 401) {
-      Message.warning('您未登录,将在三秒后跳转至登录页')
+      Message.warning(data.data.msg)
       sessionStorage.removeItem('token')
       setTimeout(() => {
         router.push('/login')
@@ -29,8 +29,12 @@ axios.interceptors.response.use(data => {
       return data
     }
     if (data.headers['content-type'].startsWith('application/json')) {
-      if (data.status === 200 && data.data.status !== 200) {
+      if (data.status === 200 && data.data.status === 500) {
         Message.error({ message: data.data.msg })
+        return data
+      }
+      if (data.status === 200 && data.data.status === 400) {
+        Message.warning({ message: data.data.msg })
         return data
       }
       if (data.data.msg) {

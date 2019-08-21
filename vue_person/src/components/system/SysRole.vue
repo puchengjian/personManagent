@@ -20,26 +20,18 @@
                 slot="prepend"
                 placeholder="请选择"
               >
-                <el-option label="用户名" value="account"></el-option>
-                <el-option label="姓名" value="user_name"></el-option>
+                <el-option label="角色姓名" value="role_name"></el-option>
               </el-select>
             </el-input>
           </div>
         </div>
         <div class="btnswiper">
           <el-button
-            type="primary"
-            v-show="isTable"
-            @click="handleIsSave"
-            size="medium"
-            >添加成员</el-button
-          >
-          <el-button
             size="medium"
             :type="isTable ? 'primary' : 'info'"
             @click="handleIsTable"
           >
-            {{ isTable ? "导出数据" : "返回列表" }}
+            {{ isTable ? "添加角色" : "返回列表" }}
           </el-button>
           <el-button
             :type="isTable ? 'danger' : 'primary'"
@@ -55,37 +47,29 @@
           <el-table
             :data="dataList"
             border
-            :max-height="580"
             style="width: 100%"
+            :max-height="580"
           >
             <el-table-column type="index" fixed width="80"> </el-table-column>
-            <el-table-column prop="account" label="用户名" width="140">
+            <!-- <el-table-column type="selection" width="55"> </el-table-column> -->
+            <el-table-column prop="roleName" label="角色名称" width="140">
             </el-table-column>
-            <el-table-column prop="userName" label="姓名" width="140">
-            </el-table-column>
-            <el-table-column prop="roleName" label="角色" width="140">
-            </el-table-column>
-            <el-table-column label="状态" width="80">
-              <template slot-scope="scope">
-                <span>{{ scope.row.enabled }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="userAge" label="年龄" width="80">
-            </el-table-column>
-            <el-table-column prop="phone" label="手机号" width="140">
-            </el-table-column>
-            <el-table-column prop="email" label="邮箱" width="140">
+            <el-table-column prop="description" label="角色描述" width="140">
             </el-table-column>
             <el-table-column prop="createTime" label="创建时间" width="200">
             </el-table-column>
             <el-table-column prop="updateTime" label="最后修改时间" width="200">
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="250">
+            <el-table-column label="操作" fixed="right" min-width="250">
               <template slot-scope="scope">
-                <el-button @click="handleIsEdit(scope.row.id)" size="mini"
+                <el-button
+                  :disabled="scope.row.admin"
+                  @click="handleIsEdit(scope.row.id)"
+                  size="mini"
                   >编辑</el-button
                 >
                 <el-button
+                  :disabled="scope.row.admin"
                   @click="handleDel(scope.row.id)"
                   type="danger"
                   size="mini"
@@ -112,85 +96,24 @@
               label-width="140px"
               :model="editFormData"
             >
-              <el-form-item label="用户名">
-                <el-input
-                  v-model="editFormData.account"
-                  :disabled="isEdit"
-                  placeholder="如：pzy"
-                ></el-input>
+              <el-form-item label="角色名称">
+                <el-input v-model="editFormData.roleName"></el-input>
                 <span class="important">*</span>
               </el-form-item>
-              <el-form-item v-show="!isEdit" label="密码">
-                <el-input
-                  v-model="editFormData.password"
-                  placeholder="如：123456"
-                ></el-input>
-                <span class="important">*</span>
+              <el-form-item label="角色名称">
+                <el-input v-model="editFormData.description"></el-input>
               </el-form-item>
-              <el-form-item label="姓名">
-                <el-input
-                  v-model="editFormData.userName"
-                  placeholder="如：张三"
-                ></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item label="角色">
-                <el-select v-model="editFormData.roleId" placeholder="请选择">
-                  <el-option
-                    v-for="role in roleList"
-                    :disabled="role.admin"
-                    :key="role.id"
-                    :label="role.roleName"
-                    :value="role.id"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="状态">
-                <el-select v-model="editFormData.enabled" placeholder="请选择">
-                  <el-option
-                    :key="editFormData.enabled"
-                    :value="true"
-                    label="true"
-                  ></el-option>
-                  <el-option
-                    :key="editFormData.enabled"
-                    :value="false"
-                    label="false"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="年龄">
-                <el-input
-                  v-model="editFormData.userAge"
-                  placeholder="如：18"
-                ></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item label="手机号">
-                <el-input
-                  v-model="editFormData.phone"
-                  placeholder="如：152xxxx1414"
-                ></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-
-              <el-form-item label="邮箱">
-                <el-input
-                  v-model="editFormData.email"
-                  placeholder="如：152xxxx1414@163.com"
-                ></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item v-show="isEdit" label="创建时间">
-                <el-date-picker
-                  v-model="editFormData.createTime"
-                  type="datetime"
-                  :disabled="true"
-                  placeholder="如：2019-01-01 00:01:01"
-                >
-                </el-date-picker>
-                <span class="important">*</span>
+              <el-form-item class="last-el-form-item" label="权限选择">
+                <el-tree
+                  style="padding-top: 7px;"
+                  :data="authTreeList"
+                  :props="defaultProps"
+                  show-checkbox
+                  node-key="id"
+                  :default-checked-keys="defaultCheckArr"
+                  :check-strictly="true"
+                  @check-change="handleCheckChange"
+                ></el-tree>
               </el-form-item>
             </el-form>
           </div>
@@ -205,24 +128,28 @@ export default {
   data () {
     return {
       isTable: true,
-      loading: false, // 加载框
-      isEdit: true, // 新增和编辑操作表示
-      dataList: [], // 表格集合
+      loading: false,
+      isEdit: true,
+      dataList: [],
       editFormData: {},
-      roleList: [], // 角色集合
       total: 0,
       queryListParam: { // 查询列表参数列表
-        searchKey: 'user_name',
+        searchKey: 'role_name',
         searchValue: '',
         page: 1,
         size: 10
-      }
+      },
+      defaultCheckArr: [], // 默认选中
+      defaultProps: {
+        children: 'children',
+        label: 'text'
+      },
+      authTreeList: [] // 权限树形结构数据
     }
   },
   created () {
     this.getDataList()
     this.initEditFormData()
-    this.handleRoleList()
   },
   methods: {
     handleLoading (val) { // loading
@@ -233,51 +160,46 @@ export default {
       this.size = 10
       this.getDataList()
     },
+    handleCheckChange (data, checked, indeterminate) { // 选择权限
+      if (checked) { // 选中
+        this.defaultCheckArr.push(data.id)
+      } else if (!checked) { // 取消选中
+        let index = this.defaultCheckArr.findIndex(item => item === data.id)
+        if (index >= 0) {
+          this.defaultCheckArr.splice(index, 1)
+        }
+      }
+      this.editFormData.menuIdList = Array.from(new Set(this.defaultCheckArr))
+    },
     async getDataList () {
       this.handleLoading(true)
-      const res = await this.$get('/api/auth/user', this.queryListParam)
+      const res = await this.$get('/api/auth/role', this.queryListParam)
       this.handleLoading(false)
-      if (res.status !== 200) return this.$message.error(res.msg)
       this.dataList = res.data
       this.total = res.total
     },
     initEditFormData () {
       this.editFormData = {
-        account: '',
-        userName: '',
-        roleId: '',
-        password: '',
-        userAge: 20,
-        phone: '',
-        photo: '',
-        email: '',
-        enabled: true
+        roleName: '',
+        description: '',
+        menuIdList: []
       }
-    },
-    async handleIsSave () {
-      this.isTable = false
-      this.isEdit = false
+      this.defaultCheckArr = []
+      this.handleTreeList()
     },
     async handleIsEdit (id) {
       this.handleLoading(true)
-      const res = await this.$get('/api/auth/user/' + id)
+      const res = await this.$get('/api/auth/role/' + id)
       this.handleLoading(false)
       this.editFormData = res.data
+      this.defaultCheckArr = res.data.menuIdList
       this.isTable = false
       this.isEdit = true
     },
     async handleIsTable () {
-      if (this.isTable) {
-        await this.$export('/api/auth/user/export', this.queryListParam).then((res) => {
-          this.$message.success('下载成功~')
-          // eslint-disable-next-line handle-callback-err
-        }).catch((err) => {
-          this.$message.error('下载失败~')
-        })
-        return
-      }
       this.initEditFormData()
       this.isTable = !this.isTable
+      this.isEdit = false
     },
     async handleSave () {
       if (this.isEdit) {
@@ -285,7 +207,7 @@ export default {
         return
       }
       this.handleLoading(true)
-      const res = await this.$post('/api/auth/user', this.editFormData)
+      const res = await this.$post('/api/auth/role', this.editFormData)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
@@ -293,7 +215,7 @@ export default {
     },
     async handleEditSave () {
       this.handleLoading(true)
-      const res = await this.$put('/api/auth/user', this.editFormData)
+      const res = await this.$put('/api/auth/role', this.editFormData)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
@@ -310,14 +232,14 @@ export default {
     },
     async enterDel (id) {
       this.handleLoading(true)
-      const res = await this.$delete('/api/auth/user/' + id)
+      const res = await this.$delete('/api/auth/role/' + id)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
     },
-    async handleRoleList () {
-      const res = await this.$get('/api/auth/role')
-      this.roleList = res.data
+    async handleTreeList () {
+      const res = await this.$get('/api/auth/menu')
+      this.authTreeList = res.data
     }
   }
 }

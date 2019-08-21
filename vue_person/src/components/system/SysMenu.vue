@@ -20,26 +20,19 @@
                 slot="prepend"
                 placeholder="请选择"
               >
-                <el-option label="用户名" value="account"></el-option>
-                <el-option label="姓名" value="user_name"></el-option>
+                <el-option label="菜单名称" value="menu_name"></el-option>
               </el-select>
             </el-input>
           </div>
         </div>
         <div class="btnswiper">
           <el-button
-            type="primary"
-            v-show="isTable"
-            @click="handleIsSave"
+            v-show="!isTable"
             size="medium"
-            >添加成员</el-button
-          >
-          <el-button
-            size="medium"
-            :type="isTable ? 'primary' : 'info'"
+            type="info"
             @click="handleIsTable"
           >
-            {{ isTable ? "导出数据" : "返回列表" }}
+            返回列表
           </el-button>
           <el-button
             :type="isTable ? 'danger' : 'primary'"
@@ -54,34 +47,42 @@
         <div class="table-content" v-show="isTable">
           <el-table
             :data="dataList"
+            default-expand-all
+            row-key="id"
             border
-            :max-height="580"
             style="width: 100%"
+            :tree-props="treeProps"
           >
-            <el-table-column type="index" fixed width="80"> </el-table-column>
-            <el-table-column prop="account" label="用户名" width="140">
+            <el-table-column prop="text" label="菜单名称" width="140">
             </el-table-column>
-            <el-table-column prop="userName" label="姓名" width="140">
+            <el-table-column prop="path" label="路径" width="120">
             </el-table-column>
-            <el-table-column prop="roleName" label="角色" width="140">
+            <el-table-column prop="component" label="组件" width="120">
+            </el-table-column>
+            <el-table-column prop="icon" label="图标" width="180">
+            </el-table-column>
+            <el-table-column prop="type" label="类型" width="80">
+            </el-table-column>
+            <el-table-column prop="perms" label="权限" width="100">
             </el-table-column>
             <el-table-column label="状态" width="80">
               <template slot-scope="scope">
                 <span>{{ scope.row.enabled }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="userAge" label="年龄" width="80">
-            </el-table-column>
-            <el-table-column prop="phone" label="手机号" width="140">
-            </el-table-column>
-            <el-table-column prop="email" label="邮箱" width="140">
-            </el-table-column>
-            <el-table-column prop="createTime" label="创建时间" width="200">
-            </el-table-column>
-            <el-table-column prop="updateTime" label="最后修改时间" width="200">
+            <el-table-column label="需要登录" width="100">
+              <template slot-scope="scope">
+                <span>{{ scope.row.meta.requireAuth }}</span>
+              </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="250">
               <template slot-scope="scope">
+                <el-button
+                  type="primary"
+                  @click="handleIsTable(scope.row.id)"
+                  size="mini"
+                  >添加</el-button
+                >
                 <el-button @click="handleIsEdit(scope.row.id)" size="mini"
                   >编辑</el-button
                 >
@@ -112,75 +113,50 @@
               label-width="140px"
               :model="editFormData"
             >
-              <el-form-item label="用户名">
+              <el-form-item label="菜单名称">
+                <el-input v-model="editFormData.menuName"></el-input>
+                <span class="important">*</span>
+              </el-form-item>
+              <el-form-item
+                label="权限"
+                v-show="editFormData.type === 1 ? false : true"
+              >
+                <el-input v-model="editFormData.perms"></el-input>
+                <span class="important">*</span>
+              </el-form-item>
+              <el-form-item
+                v-show="editFormData.type === 1 ? true : false"
+                label="组件"
+              >
                 <el-input
-                  v-model="editFormData.account"
                   :disabled="isEdit"
-                  placeholder="如：pzy"
+                  v-model="editFormData.component"
                 ></el-input>
                 <span class="important">*</span>
               </el-form-item>
-              <el-form-item v-show="!isEdit" label="密码">
-                <el-input
-                  v-model="editFormData.password"
-                  placeholder="如：123456"
-                ></el-input>
+              <el-form-item label="图标">
+                <el-input v-model="editFormData.icon"></el-input>
                 <span class="important">*</span>
               </el-form-item>
-              <el-form-item label="姓名">
-                <el-input
-                  v-model="editFormData.userName"
-                  placeholder="如：张三"
-                ></el-input>
+              <el-form-item label="路径">
+                <el-input v-model="editFormData.path"></el-input>
                 <span class="important">*</span>
               </el-form-item>
-              <el-form-item label="角色">
-                <el-select v-model="editFormData.roleId" placeholder="请选择">
-                  <el-option
-                    v-for="role in roleList"
-                    :disabled="role.admin"
-                    :key="role.id"
-                    :label="role.roleName"
-                    :value="role.id"
-                  >
-                  </el-option>
+              <el-form-item label="是否需要登录">
+                <el-select
+                  v-model="editFormData.requireAuth"
+                  placeholder="请选择"
+                >
+                  <el-option :value="true" label="true"></el-option>
+                  <el-option :value="false" label="false"></el-option>
                 </el-select>
-              </el-form-item>
-              <el-form-item label="状态">
-                <el-select v-model="editFormData.enabled" placeholder="请选择">
-                  <el-option
-                    :key="editFormData.enabled"
-                    :value="true"
-                    label="true"
-                  ></el-option>
-                  <el-option
-                    :key="editFormData.enabled"
-                    :value="false"
-                    label="false"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="年龄">
-                <el-input
-                  v-model="editFormData.userAge"
-                  placeholder="如：18"
-                ></el-input>
                 <span class="important">*</span>
               </el-form-item>
-              <el-form-item label="手机号">
-                <el-input
-                  v-model="editFormData.phone"
-                  placeholder="如：152xxxx1414"
-                ></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-
-              <el-form-item label="邮箱">
-                <el-input
-                  v-model="editFormData.email"
-                  placeholder="如：152xxxx1414@163.com"
-                ></el-input>
-                <span class="important">*</span>
+              <el-form-item label="类型">
+                <el-radio-group :disabled="isEdit" v-model="editFormData.type">
+                  <el-radio :label="1">菜单</el-radio>
+                  <el-radio :label="2">按钮</el-radio>
+                </el-radio-group>
               </el-form-item>
               <el-form-item v-show="isEdit" label="创建时间">
                 <el-date-picker
@@ -209,20 +185,21 @@ export default {
       isEdit: true, // 新增和编辑操作表示
       dataList: [], // 表格集合
       editFormData: {},
-      roleList: [], // 角色集合
       total: 0,
       queryListParam: { // 查询列表参数列表
-        searchKey: 'user_name',
+        searchKey: 'menu_name',
         searchValue: '',
         page: 1,
         size: 10
+      },
+      treeProps: {
+        children: 'children'
       }
     }
   },
   created () {
     this.getDataList()
     this.initEditFormData()
-    this.handleRoleList()
   },
   methods: {
     handleLoading (val) { // loading
@@ -235,49 +212,35 @@ export default {
     },
     async getDataList () {
       this.handleLoading(true)
-      const res = await this.$get('/api/auth/user', this.queryListParam)
+      const res = await this.$get('/api/auth/menu', this.queryListParam)
       this.handleLoading(false)
-      if (res.status !== 200) return this.$message.error(res.msg)
       this.dataList = res.data
       this.total = res.total
     },
     initEditFormData () {
       this.editFormData = {
-        account: '',
-        userName: '',
-        roleId: '',
-        password: '',
-        userAge: 20,
-        phone: '',
-        photo: '',
-        email: '',
-        enabled: true
+        parentId: '',
+        menuName: '',
+        component: '',
+        icon: '',
+        path: '',
+        requireAuth: true,
+        type: 1
       }
-    },
-    async handleIsSave () {
-      this.isTable = false
-      this.isEdit = false
     },
     async handleIsEdit (id) {
       this.handleLoading(true)
-      const res = await this.$get('/api/auth/user/' + id)
+      const res = await this.$get('/api/auth/menu/' + id)
       this.handleLoading(false)
       this.editFormData = res.data
       this.isTable = false
       this.isEdit = true
     },
-    async handleIsTable () {
-      if (this.isTable) {
-        await this.$export('/api/auth/user/export', this.queryListParam).then((res) => {
-          this.$message.success('下载成功~')
-          // eslint-disable-next-line handle-callback-err
-        }).catch((err) => {
-          this.$message.error('下载失败~')
-        })
-        return
-      }
+    async handleIsTable (id) {
       this.initEditFormData()
       this.isTable = !this.isTable
+      this.isEdit = false
+      this.editFormData.parentId = id
     },
     async handleSave () {
       if (this.isEdit) {
@@ -285,7 +248,7 @@ export default {
         return
       }
       this.handleLoading(true)
-      const res = await this.$post('/api/auth/user', this.editFormData)
+      const res = await this.$post('/api/auth/menu', this.editFormData)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
@@ -293,7 +256,7 @@ export default {
     },
     async handleEditSave () {
       this.handleLoading(true)
-      const res = await this.$put('/api/auth/user', this.editFormData)
+      const res = await this.$put('/api/auth/menu', this.editFormData)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
@@ -310,14 +273,10 @@ export default {
     },
     async enterDel (id) {
       this.handleLoading(true)
-      const res = await this.$delete('/api/auth/user/' + id)
+      const res = await this.$delete('/api/auth/menu/' + id)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
-    },
-    async handleRoleList () {
-      const res = await this.$get('/api/auth/role')
-      this.roleList = res.data
     }
   }
 }
