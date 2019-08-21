@@ -48,6 +48,10 @@ public class AuthRealm extends AuthorizingRealm {
             throw  new UnknownAccountException("账号不正确~");
         }
 
+        if (!user.isEnabled()) {
+            throw  new AuthenticationException("账号已被锁定~");
+        }
+
         if (!password.equals(user.getPassword())) {
             throw new IncorrectCredentialsException("密码不正确~");
         }

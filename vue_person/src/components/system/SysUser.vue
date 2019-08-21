@@ -67,7 +67,7 @@
             </el-table-column>
             <el-table-column label="状态" width="80">
               <template slot-scope="scope">
-                <span>{{ scope.row.enabled }}</span>
+                <span>{{ scope.row.enabled  ? '启用' : '禁用'}}</span>
               </template>
             </el-table-column>
             <el-table-column prop="userAge" label="年龄" width="80">
@@ -151,12 +151,12 @@
                   <el-option
                     :key="editFormData.enabled"
                     :value="true"
-                    label="true"
+                    label="启用"
                   ></el-option>
                   <el-option
                     :key="editFormData.enabled"
                     :value="false"
-                    label="false"
+                    label="禁用"
                   ></el-option>
                 </el-select>
               </el-form-item>
