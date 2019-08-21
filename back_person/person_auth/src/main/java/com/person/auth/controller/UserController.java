@@ -1,8 +1,12 @@
 package com.person.auth.controller;
 
-import com.person.auth.network.bean.InsertUserReq;
-import com.person.auth.network.bean.UpdateUserReq;
+import com.person.auth.network.bean.user.InsertUserReq;
+import com.person.auth.network.bean.user.ListUserReq;
+import com.person.auth.network.bean.user.UpdateUserReq;
+import com.person.auth.pojo.entity.Role;
 import com.person.auth.pojo.entity.User;
+import com.person.auth.pojo.vo.UserVO;
+import com.person.auth.service.RoleService;
 import com.person.auth.service.UserService;
 import com.person.constant.HttpConst;
 import com.person.json.SuccessOrFailure;
@@ -14,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -28,13 +33,16 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
+
 
     @GetMapping("/user")
-    @ApiOperation(value = "查询全部用户", response = User.class)
-    SuccessOrFailure listUser() {
+    @ApiOperation(value = "查询全部用户", response = UserVO.class)
+    SuccessOrFailure listUser(@Valid ListUserReq req) {
         try {
-            List<User> users = userService.listUser();
-            Integer count = userService.countUser();
+            List<UserVO> users = userService.listUser(req);
+            Integer count = userService.countUser(req);
 
             return SuccessOrFailure.SUCCESS(users, count);
         } catch (Exception e) {
@@ -44,10 +52,10 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    @ApiOperation(value = "根据Id查询用户信息", response = User.class)
+    @ApiOperation(value = "根据Id查询用户信息", response = UserVO.class)
     SuccessOrFailure findUserById(@PathVariable String id) {
         try {
-            User user = userService.findUserById(id);
+            UserVO user = userService.findUserById(id);
 
             return SuccessOrFailure.SUCCESS(user);
         } catch (Exception e) {
@@ -81,6 +89,13 @@ public class UserController {
     @ApiOperation(value = "修改用户")
     SuccessOrFailure updateUserById(@RequestBody UpdateUserReq userReq) {
         try {
+            Role role = roleService.findRoleByUserId(userReq.getId());
+            if (role.isAdmin()) {
+                if (!role.getId().equals(userReq.getRoleId())) {
+                    return SuccessOrFailure.FAILURE(HttpConst.BAD_REQUEST, "超级管理员用户不可被修改角色~");
+                }
+            }
+
             boolean flag = userService.updateUserById(userReq);
             if (flag) {
                 return SuccessOrFailure.SUCCESS("修改成功~");
@@ -113,11 +128,11 @@ public class UserController {
 
     @GetMapping("/user/export")
     @ApiOperation(value = "导出excel", response = User.class)
-    void exportUser(HttpServletResponse response) {
+    void exportUser(@Valid ListUserReq req, HttpServletResponse response) {
         try {
-            List<User> users = userService.listUser();
+            List<UserVO> users = userService.listUser(req);
 
-            ExcelUtils.exportExcel(users, "用户数据", "用户数据", response, User.class);
+            ExcelUtils.exportExcel(users, "用户数据", "用户数据", response, UserVO.class);
         } catch (Exception e) {
             log.error("导出excel异常:{}", e);
         }

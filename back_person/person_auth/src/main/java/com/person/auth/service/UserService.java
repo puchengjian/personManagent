@@ -1,8 +1,10 @@
 package com.person.auth.service;
 
-import com.person.auth.network.bean.InsertUserReq;
-import com.person.auth.network.bean.UpdateUserReq;
+import com.person.auth.network.bean.user.InsertUserReq;
+import com.person.auth.network.bean.user.ListUserReq;
+import com.person.auth.network.bean.user.UpdateUserReq;
 import com.person.auth.pojo.entity.User;
+import com.person.auth.pojo.vo.UserVO;
 
 import java.util.List;
 
@@ -20,17 +22,17 @@ public interface UserService {
     /**
      * 查询全部用户
      */
-    List<User> listUser();
+    List<UserVO> listUser(ListUserReq req);
 
     /**
      * 查询用户总条数
      */
-    Integer countUser();
+    Integer countUser(ListUserReq req);
 
     /**
      * 根据Id查询用户信息
      */
-    User findUserById(String id);
+    UserVO findUserById(String id);
 
     /**
      * 新增用户

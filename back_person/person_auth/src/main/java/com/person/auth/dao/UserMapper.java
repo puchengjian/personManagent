@@ -1,8 +1,10 @@
 package com.person.auth.dao;
 
-import com.person.auth.network.bean.InsertUserReq;
-import com.person.auth.network.bean.UpdateUserReq;
+import com.person.auth.network.bean.user.InsertUserReq;
+import com.person.auth.network.bean.user.ListUserReq;
+import com.person.auth.network.bean.user.UpdateUserReq;
 import com.person.auth.pojo.entity.User;
+import com.person.auth.pojo.vo.UserVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,11 +19,11 @@ public interface UserMapper {
 
     User login(@Param("account") String account);
 
-    List<User> listUser();
+    List<UserVO> listUser(ListUserReq req);
 
-    Integer countUser();
+    Integer countUser(ListUserReq req);
 
-    User findUserById(@Param("id") String id);
+    UserVO findUserById(@Param("id") String id);
 
     Integer insertUser(InsertUserReq userReq);
 

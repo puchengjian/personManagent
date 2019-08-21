@@ -15,6 +15,9 @@ public class BaseReq {
     private Integer size = 10;
 
     public Integer getPage() {
+        if (page == 0) {
+            page = 1;
+        }
         return (page - 1) * size;
     }
 

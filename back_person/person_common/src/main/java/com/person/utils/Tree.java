@@ -34,6 +34,15 @@ public class Tree<T> {
 
     private String icon;
 
+    @ApiModelProperty("类型")
+    private String type;
+
+    @ApiModelProperty("权限")
+    private String perms;
+
+    @ApiModelProperty("启用状态")
+    private boolean enabled;
+
     @ApiModelProperty("requireAuth 是否需要登录 true-登录")
     private Map<String, Object> meta = new HashMap<>();
 
@@ -46,6 +55,7 @@ public class Tree<T> {
         String builder = "树形数据[ " +
                 " 主键: " + id +
                 ",菜单名称: " + text + "，路径: " + path + ", 跳转页面: " + component +
+                ",类型: " + type + "，权限: " + perms + ", 状态: " + enabled +
                 ",图标: " + icon + "，meta: " + meta + "，父级: " + parentId +
                 ", 子节点:" + children +
                 " ]";

@@ -3,32 +3,43 @@
 <mapper namespace="com.person.auth.dao.UserMapper">
 
     <sql id="userSql">
-        id, user_name, account, password, user_age, phone, photo, email, enabled, create_time, update_time
+        u.id, u.user_name, u.account, u.password, u.user_age, u.phone, u.photo, u.email, u.enabled, u.create_time, u.update_time
     </sql>
 
     <select id="login" resultType="user">
         select
         <include refid="userSql"/>
-        from sys_user
+        from sys_user u
         where account = #{account}
     </select>
 
-    <select id="listUser" resultType="user">
-        select
+    <select id="listUser" resultType="userVO" parameterType="listUserReq">
+        select r.role_name,
         <include refid="userSql"/>
-        from sys_user
-        order by create_time
+        from sys_user u
+        left join sys_user_role sur on u.id = sur.user_id
+        left join sys_role r on sur.role_id = r.id
+        <if test="searchValue != null">
+            where ${searchKey} like concat('%', #{searchValue},'%')
+        </if>
+        order by u.create_time
+        limit #{page}, #{size}
     </select>
 
-    <select id="countUser" resultType="java.lang.Integer">
-        select count(1) from sys_user;
+    <select id="countUser" resultType="java.lang.Integer" parameterType="listUserReq">
+        select count(1) from sys_user
+        <if test="searchValue != null">
+            where ${searchKey} like concat('%', #{searchValue},'%')
+        </if>
     </select>
 
-    <select id="findUserById" resultType="user">
-        select
+    <select id="findUserById" resultType="userVO">
+        select r.id roleId,
         <include refid="userSql"/>
-        from sys_user
-        where id = #{id}
+        from sys_user u
+        left join sys_user_role sur on u.id = sur.user_id
+        left join sys_role r on sur.role_id = r.id
+        where u.id = #{id}
     </select>
 
     <insert id="insertUser" parameterType="user">
@@ -54,6 +65,7 @@
             <if test="email != null">
                 email = #{email},
             </if>
+            enabled = #{enabled},
             update_time = now()
         </set>
         where id = #{id}

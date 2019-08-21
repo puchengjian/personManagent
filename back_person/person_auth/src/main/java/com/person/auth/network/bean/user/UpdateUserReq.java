@@ -1,4 +1,4 @@
-package com.person.auth.network.bean;
+package com.person.auth.network.bean.user;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,6 +18,12 @@ public class UpdateUserReq {
     @ApiModelProperty("姓名")
     private String userName;
 
+    @ApiModelProperty("角色Id")
+    private String roleId;
+
+    @ApiModelProperty("启用状态")
+    private boolean enabled;
+
     @ApiModelProperty("年龄")
     private Integer userAge;
 
@@ -34,7 +40,7 @@ public class UpdateUserReq {
     public String toString() {
         String builder = "用户信息[ " +
                 " 主键: " + id +
-                ",姓名: " + userName + "，年龄: " + userAge + ", 手机号: " + phone +
+                ",姓名: " + userName + ",启用状态: " + enabled + "，年龄: " + userAge + ", 手机号: " + phone +
                 ", 邮箱: " + email +
                 " ]";
 

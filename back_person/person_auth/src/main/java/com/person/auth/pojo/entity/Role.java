@@ -27,6 +27,9 @@ public class Role implements Serializable {
     @ApiModelProperty("1-true 0-false 管理员")
     private boolean admin;
 
+    @ApiModelProperty("角色描述")
+    private String description;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 

@@ -44,7 +44,7 @@ public class Menu implements Serializable {
     private String parentId;
 
     @ApiModelProperty("1-true 0-false true启用")
-    private boolean enable;
+    private boolean enabled;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
@@ -59,7 +59,7 @@ public class Menu implements Serializable {
                 " 主键: " + id +
                 ",菜单名称: " + menuName + "，路径: " + path + ", 跳转页面: " + component +
                 ",图标: " + icon + "，需要登录: " + requireAuth + ", 类型: " + (type == 1 ? "菜单" :"按钮") +
-                ",权限: " + perms + "，父级: " + parentId + ", 启用状态: " + enable +
+                ",权限: " + perms + "，父级: " + parentId + ", 启用状态: " + enabled +
                 ",创建时间: " + createTime + "，更新时间: " + updateTime +
                 " ]";
 

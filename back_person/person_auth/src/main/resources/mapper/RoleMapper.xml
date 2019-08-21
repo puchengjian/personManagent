@@ -3,25 +3,76 @@
 <mapper namespace="com.person.auth.dao.RoleMapper">
 
     <sql id="listRoleSql">
-        r.id, r.role_name, r.is_admin admin, r.create_time, r.update_time
+        r.id, r.role_name, r.is_admin admin, r.description, r.create_time, r.update_time
     </sql>
 
-    <select id="listRole" resultType="role">
-        select
-        <include refid="listRoleSql"/>
-        from sys_role r;
-    </select>
-
-    <select id="findRoleById" resultType="role">
+    <select id="listRole" resultType="role" parameterType="listRoleReq">
         select
         <include refid="listRoleSql"/>
         from sys_role r
-        where id = #{id}
+        <if test="searchValue != null">
+            where ${searchKey} like concat('%',#{searchValue}, '%')
+        </if>
+        order by create_time
+        limit #{page} , #{size}
     </select>
+
+    <select id="countRole" resultType="java.lang.Integer">
+        select count(1) from sys_role
+        <if test="searchValue != null">
+            where ${searchKey} like concat('%',#{searchValue}, '%')
+        </if>
+    </select>
+
+    <select id="findRoleById" resultMap="roleMap">
+        select rm.menu_id,
+        <include refid="listRoleSql"/>
+        from sys_role r
+        inner join sys_role_menu rm on r.id = rm.role_id
+        where r.id = #{id}
+    </select>
+
+    <resultMap id="roleMap" type="roleVO">
+        <id column="id" property="id"/>
+        <result column="role_name" property="roleName"/>
+        <result column="admin" property="admin"/>
+        <result column="description" property="description"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <collection property="menuIdList" ofType="String">
+            <result column="menu_id"/>
+        </collection>
+    </resultMap>
+
     <select id="findRoleByUserId" resultType="role">
         select
         <include refid="listRoleSql"/>
         from sys_role r
         inner join sys_user_role ur on r.id = ur.role_id and ur.user_id = #{userId}
     </select>
+
+    <insert id="insertRole" parameterType="insertRoleReq">
+        insert into sys_role (id, role_name, description, create_time, update_time)
+        values (#{id}, #{roleName}, #{description}, now(), now() );
+    </insert>
+
+    <update id="updateRoleById" parameterType="updateRoleReq">
+        update sys_role
+        <set>
+            <if test="roleName != null">
+                role_name = #{roleName} ,
+            </if>
+            <if test="description != null">
+                description = #{description} ,
+            </if>
+            update_time = now()
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRoleById">
+        delete from sys_role
+        where id = #{id}
+    </delete>
+
 </mapper>

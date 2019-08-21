@@ -1,6 +1,7 @@
 package com.person.config;
 
 import com.google.common.base.Predicates;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -18,9 +19,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 public class SwaggerConfig {
 
+    @Value("${swagger.enabled}")
+    private boolean swaggerEnabled;
+
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .enable(swaggerEnabled)
                 .apiInfo(apiInfo())
                 .pathMapping("/")
                 .select()

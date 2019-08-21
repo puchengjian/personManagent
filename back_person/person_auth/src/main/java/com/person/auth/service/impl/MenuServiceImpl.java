@@ -2,11 +2,13 @@ package com.person.auth.service.impl;
 
 import com.person.auth.dao.MenuMapper;
 import com.person.auth.dao.RoleMapper;
-import com.person.auth.dao.RoleMenuMapper;
+import com.person.auth.network.bean.menu.InsertMenuReq;
+import com.person.auth.network.bean.menu.ListMenuReq;
+import com.person.auth.network.bean.menu.UpdateMenuReq;
 import com.person.auth.pojo.entity.Menu;
 import com.person.auth.pojo.entity.Role;
-import com.person.auth.pojo.entity.RoleMenu;
 import com.person.auth.service.MenuService;
+import com.person.auth.service.RoleMenuService;
 import com.person.auth.shiro.ShiroService;
 import com.person.utils.BuildTree;
 import com.person.utils.Tree;
@@ -29,16 +31,86 @@ public class MenuServiceImpl implements MenuService {
     @Autowired
     private RoleMapper roleMapper;
     @Autowired
-    private RoleMenuMapper roleMenuMapper;
+    private RoleMenuService roleMenuService;
     @Autowired
     private ShiroService shiroService;
 
     @Override
     public List<Tree<Menu>> listNavMenu(String id) {
-        List<Tree<Menu>> trees = new ArrayList<>();
         List<Menu> menus = menuMapper.listNavMenu(id);
+
+        return BuildTree.buildList(listTreeMenu(menus));
+    }
+
+    @Override
+    public List<Tree<Menu>> listMenu(ListMenuReq req) {
+        List<Menu> menus = menuMapper.listMenu(req);
+        List<Tree<Menu>> trees = BuildTree.buildList(listTreeMenu(menus));
+        if (menus.size() > 0 && trees.size() <= 0) {
+            return listTreeMenu(menus);
+        }
+
+        return trees;
+    }
+
+    @Override
+    public Integer countMenu(ListMenuReq req) {
+        return menuMapper.countMenu(req);
+    }
+
+    @Override
+    public List<String> listMenuPerms(String id) {
+        return menuMapper.listMenuPerms(id);
+    }
+
+    @Override
+    public Menu findMenuById(String id) {
+        return menuMapper.findMenuById(id);
+    }
+
+    @Override
+    @Transactional
+    public boolean insertMenu(InsertMenuReq req) {
+        Role role = roleMapper.findRoleByUserId(shiroService.getId());
+        req.setId(UUIDUtils.getUUID());
+        if (menuMapper.insertMenu(req) > 0) {
+            if (role.isAdmin()) {
+                roleMenuService.insertRoleMenu(role.getId(), req.getId());
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean updateMenuById(UpdateMenuReq req) {
+        if (menuMapper.updateMenuById(req) > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteMenuById(String id) {
+        if (menuMapper.deleteMenuById(id) > 0) {
+            roleMenuService.deleteByMenuId(id);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 查询的菜单数据转换成Tree数据
+     */
+    private List<Tree<Menu>> listTreeMenu(List<Menu> menus) {
+        List<Tree<Menu>> trees = new ArrayList<>();
+
         for (Menu menu : menus) {
-            Tree tree = new Tree();
+            Tree<Menu> tree = new Tree<Menu>();
             tree.setId(menu.getId());
             tree.setText(menu.getMenuName());
             tree.setParentId(menu.getParentId());
@@ -48,34 +120,13 @@ public class MenuServiceImpl implements MenuService {
             Map<String, Object> map = new HashMap<>();
             map.put("requireAuth", menu.isRequireAuth());
             tree.setMeta(map);
+            tree.setType(menu.getType() == 1 ? "菜单" : "按钮");
+            tree.setPerms(menu.getPerms());
+            tree.setEnabled(menu.isEnabled());
             trees.add(tree);
         }
 
-        return BuildTree.buildList(trees);
-    }
-
-    @Override
-    public List<String> listMenuPerms(String id) {
-        return menuMapper.listMenuPerms(id);
-    }
-
-    @Override
-    @Transactional
-    public boolean insertMenu(Menu menu) {
-        Role role = roleMapper.findRoleByUserId(shiroService.getId());
-        menu.setId(UUIDUtils.getUUID());
-        if (menuMapper.insertMenu(menu) > 0) {
-            if (role.isAdmin()) {
-                RoleMenu roleMenu = new RoleMenu();
-                roleMenu.setId(UUIDUtils.getUUID());
-                roleMenu.setMenuId(menu.getId());
-                roleMenu.setRoleId(role.getId());
-                roleMenuMapper.insertRoleMenu(roleMenu);
-            }
-            return true;
-        }
-
-        return false;
+        return trees;
     }
 
 }

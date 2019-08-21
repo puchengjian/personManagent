@@ -43,6 +43,9 @@ public class ShiroConfig {
     @Value("${spring.redis.timeout}")
     private Integer timout;
 
+    @Value("${shiro.cookie.enabled}")
+    private boolean cookieEnabled;
+
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean() {
         ShiroFilterFactoryBean filterFactoryBean = new ShiroFilterFactoryBean();
@@ -75,7 +78,7 @@ public class ShiroConfig {
         sessionManager.setSessionDAO(redisSessionDAO());
         //解决第一次重定向带jessionId
         sessionManager.setSessionIdUrlRewritingEnabled(false);
-        sessionManager.setSessionIdCookieEnabled(false);
+        sessionManager.setSessionIdCookieEnabled(cookieEnabled);
 
         return sessionManager;
     }

@@ -34,26 +34,26 @@ public class User implements Serializable {
     private String password;
 
     @ApiModelProperty("年龄")
-    @Excel(name = "年龄", orderNum = 3)
+    @Excel(name = "年龄", orderNum = 4)
     private Integer userAge;
 
     @ApiModelProperty("手机号")
-    @Excel(name = "手机号", orderNum = 4)
+    @Excel(name = "手机号", orderNum = 5)
     private String phone;
 
     @ApiModelProperty("图片")
     private String photo;
 
     @ApiModelProperty("邮箱")
-    @Excel(name = "邮箱", orderNum = 5)
+    @Excel(name = "邮箱", orderNum = 6)
     private String email;
 
     @ApiModelProperty("true-启用 状态 1-启用 0-禁用 ")
-    @Excel(name = "状态", orderNum = 6)
+    @Excel(name = "状态", orderNum = 7)
     private boolean enabled;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Excel(name = "创建时间", orderNum = 7)
+    @Excel(name = "创建时间", orderNum = 8)
     private Date createTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

@@ -1,0 +1,5 @@
+swagger:
+  enabled: false
+shiro:
+  cookie:
+    enabled: false

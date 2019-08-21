@@ -1,4 +1,4 @@
-package com.person.auth.network.bean;
+package com.person.auth.network.bean.user;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,6 +20,9 @@ public class InsertUserReq {
 
     @ApiModelProperty("账号")
     private String account;
+
+    @ApiModelProperty("角色Id")
+    private String roleId;
 
     @ApiModelProperty("密码")
     private String password;
