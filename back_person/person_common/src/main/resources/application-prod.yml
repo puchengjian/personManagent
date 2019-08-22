@@ -3,3 +3,4 @@ swagger:
 shiro:
   cookie:
     enabled: false
+

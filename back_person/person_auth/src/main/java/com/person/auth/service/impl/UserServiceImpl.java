@@ -11,6 +11,7 @@ import com.person.auth.service.UserService;
 import com.person.utils.MD5Utils;
 import com.person.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private UserRoleService userRoleService;
+
 
     @Override
     public User login(String account) {

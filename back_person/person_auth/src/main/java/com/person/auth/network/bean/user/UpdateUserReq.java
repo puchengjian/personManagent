@@ -3,6 +3,7 @@ package com.person.auth.network.bean.user;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author: pzy
@@ -31,6 +32,9 @@ public class UpdateUserReq {
     private String phone;
 
     @ApiModelProperty("图片")
+    private MultipartFile file;
+
+    @ApiModelProperty(value = "图片地址", hidden = true)
     private String photo;
 
     @ApiModelProperty("邮箱")

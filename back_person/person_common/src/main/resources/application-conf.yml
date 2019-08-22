@@ -1,0 +1,7 @@
+upload:
+  image:
+    path: /home/tools/nginx/personManagent/image
+  file:
+    path: /home/tools/nginx/personManagent/file
+image:
+  path: https://inmeyu.com/image/
