@@ -1,0 +1,9 @@
+ftp:
+  address: inmeyu.com
+  port: 21
+  username: ftpuser
+  password: pzy7410W
+  image:
+    path: /home/ftpuser/images
+image:
+  path: http://inmeyu.com/images/

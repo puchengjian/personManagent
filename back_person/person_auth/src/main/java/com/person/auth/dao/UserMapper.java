@@ -29,6 +29,8 @@ public interface UserMapper {
 
     Integer updateUserById(UpdateUserReq userReq);
 
+    Integer updateUserPhoto(@Param("photo") String photo, @Param("userId") String userId);
+
     Integer deleteUserById(@Param("id") String id);
 
 }

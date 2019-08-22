@@ -14,18 +14,21 @@ public class FileUtils {
 
     /**
      * 上传文件
-     * @param file 文件
-     * @param path 路径
-     * @param fileName 源文件名称
+     *
+     * @param file     文件
+     * @param path     路径
+     * @param fileName 文件名称
      */
-    public static boolean updloadFile(MultipartFile file, String path, String fileName) {
+    public static boolean uploadFile(MultipartFile file, String path, String fileName) {
         boolean flag = true;
         //生成新的文件名
         String realPath = path + fileName;
         File dest = new File(realPath);
 
-        if (!dest.getParentFile().exists()) {
-            dest.getParentFile().mkdir();
+        File parentFile = dest.getParentFile();
+        while (parentFile.exists()) {
+            parentFile.mkdir();
+            parentFile = parentFile.getParentFile();
         }
 
         try {

@@ -11,8 +11,8 @@ Configuration:
       - name: log.level.console
         value: warn
       - name: log.path
-#        value: /home/logs/person
-        value: ./logs/person
+        value: /home/logs/person
+#        value: ./logs/person
       - name: project.name
         value: person_auth
       - name: log.pattern #ISO8601格式

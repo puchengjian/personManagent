@@ -31,10 +31,7 @@ public class UpdateUserReq {
     @ApiModelProperty("手机号")
     private String phone;
 
-    @ApiModelProperty("图片")
-    private MultipartFile file;
-
-    @ApiModelProperty(value = "图片地址", hidden = true)
+    @ApiModelProperty(value = "图片地址")
     private String photo;
 
     @ApiModelProperty("邮箱")

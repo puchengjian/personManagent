@@ -3,4 +3,4 @@ server:
 
 spring:
   profiles:
-    active: jdbc, redis, conf, prod
+    active: jdbc, redis, conf, prod, ftp

@@ -78,6 +78,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean updateUserPhoto(String photo, String userId) {
+        if (userMapper.updateUserPhoto(photo, userId) > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
     @Transactional
     public boolean deleteUserById(String id) {
         if (userMapper.deleteUserById(id) > 0) {

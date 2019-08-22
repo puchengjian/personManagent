@@ -76,5 +76,9 @@
         where id = #{id}
     </delete>
 
+    <update id="updateUserPhoto">
+      update sys_user set photo = #{photo}  where id = #{userId} ;
+    </update>
+
 
 </mapper>

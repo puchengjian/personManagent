@@ -12,6 +12,7 @@ import com.person.constant.HttpConst;
 import com.person.json.SuccessOrFailure;
 import com.person.utils.ExcelUtils;
 import com.person.utils.FileUtils;
+import com.person.utils.FtpUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -40,10 +41,23 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
-    @Value("${upload.image.path}")
-    private String uploadImagePath;
     @Value("${image.path}")
     private String imagePath;
+
+    @Value("${ftp.address}")
+    private String host;
+
+    @Value("${ftp.port}")
+    private Integer port;
+
+    @Value("${ftp.username}")
+    private String username;
+
+    @Value("${ftp.password}")
+    private String password;
+
+    @Value("${ftp.image.path}")
+    private String ftpImagePath;
 
 
     @GetMapping("/user")
@@ -104,27 +118,9 @@ public class UserController {
                     return SuccessOrFailure.FAILURE(HttpConst.BAD_REQUEST, "超级管理员用户不可被修改角色~");
                 }
             }
-            User user = userService.findUserById(userReq.getId());
-
-            MultipartFile file = userReq.getFile();
-            String fileOriginalName = file.getOriginalFilename();
-
-            if (fileOriginalName != null) {
-                String suffix = FileUtils.getSuffix(fileOriginalName);
-                if (!suffix.equals(".jpg") && !suffix.equals(".png")) {
-                    return SuccessOrFailure.FAILURE(HttpConst.BAD_REQUEST, "请上传图片后缀为jpg和png~");
-                }
-
-                String fileName = uploadImagePath + FileUtils.getFileName(fileOriginalName);
-                if (!FileUtils.updloadFile(file, imagePath, fileName)) {
-                    return SuccessOrFailure.FAILURE(HttpConst.BAD_REQUEST, "上传图片失败~");
-                }
-                userReq.setPhone(fileName);
-            }
 
             boolean flag = userService.updateUserById(userReq);
             if (flag) {
-                new File(user.getPhoto()).delete();
                 return SuccessOrFailure.SUCCESS("修改成功~");
             } else {
                 return SuccessOrFailure.FAILURE(HttpConst.BAD_REQUEST, "修改失败~");
@@ -134,6 +130,42 @@ public class UserController {
             log.error("修改用户信息异常:{}", e);
             return SuccessOrFailure.FAILURE;
         }
+    }
+
+    @PutMapping("/photo/user")
+    @ApiOperation(value = "修改用户头像")
+    SuccessOrFailure updateUserById(@RequestParam(value = "file") MultipartFile file, @RequestParam String userId) {
+        boolean flag = false;
+        try {
+            User user = userService.findUserById(userId);
+            if (file != null) {
+                String fileOriginalName = file.getOriginalFilename();
+                String suffix = FileUtils.getSuffix(fileOriginalName);
+                if (!suffix.equals(".jpg") && !suffix.equals(".png")) {
+                    return SuccessOrFailure.FAILURE(HttpConst.BAD_REQUEST, "请上传图片后缀为jpg和png~");
+                }
+
+                String fileName = FileUtils.getFileName(fileOriginalName);
+                if (!FtpUtils.uploadFile(host, port, username, password, ftpImagePath, fileName, file.getInputStream())) {
+                    return SuccessOrFailure.FAILURE(HttpConst.BAD_REQUEST, "上传图片失败~");
+
+                }
+
+                String photo = imagePath + fileName;
+                flag = userService.updateUserPhoto(photo, userId);
+            }
+
+            if (flag) {
+                return SuccessOrFailure.SUCCESS("上传成功~");
+            } else {
+                return SuccessOrFailure.FAILURE(HttpConst.BAD_REQUEST, "上传失败~");
+            }
+
+        } catch (Exception e) {
+            log.error("修改用户头像异常:{}", e);
+            return SuccessOrFailure.FAILURE;
+        }
+
     }
 
     @DeleteMapping("/user/{id}")

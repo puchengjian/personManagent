@@ -45,6 +45,11 @@ public interface UserService {
     boolean updateUserById(UpdateUserReq userReq);
 
     /**
+     * 修改用户头像
+     */
+    boolean updateUserPhoto(String photo, String userId);
+
+    /**
      * 根据Id删除用户
      */
     boolean deleteUserById(String id);
