@@ -59,6 +59,11 @@
             style="width: 100%"
           >
             <el-table-column type="index" fixed width="80"> </el-table-column>
+            <el-table-column label="头像" width="80">
+              <template slot-scope="scope">
+                <img :src="scope.row.photo" alt="" class="photo-img" />
+              </template>
+            </el-table-column>
             <el-table-column prop="account" label="用户名" width="140">
             </el-table-column>
             <el-table-column prop="userName" label="姓名" width="140">
@@ -67,7 +72,7 @@
             </el-table-column>
             <el-table-column label="状态" width="80">
               <template slot-scope="scope">
-                <span>{{ scope.row.enabled  ? '启用' : '禁用'}}</span>
+                <span>{{ scope.row.enabled ? "启用" : "禁用" }}</span>
               </template>
             </el-table-column>
             <el-table-column prop="userAge" label="年龄" width="80">
@@ -148,16 +153,8 @@
               </el-form-item>
               <el-form-item label="状态">
                 <el-select v-model="editFormData.enabled" placeholder="请选择">
-                  <el-option
-                    :key="editFormData.enabled"
-                    :value="true"
-                    label="启用"
-                  ></el-option>
-                  <el-option
-                    :key="editFormData.enabled"
-                    :value="false"
-                    label="禁用"
-                  ></el-option>
+                  <el-option :value="true" label="启用"></el-option>
+                  <el-option :value="false" label="禁用"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="年龄">
@@ -192,6 +189,24 @@
                 </el-date-picker>
                 <span class="important">*</span>
               </el-form-item>
+              <el-form-item class="last-content" label="头像">
+                <div>
+                  <el-upload
+                    class="upload-demo"
+                    ref="upload"
+                    action
+                    :file-list="fileList"
+                    :http-request="handleUpload"
+                    multiple
+                    :limit="1"
+                    :on-exceed="handleExceed"
+                    list-type="picture"
+                    accept="image/jpeg,image/gif,image/png"
+                  >
+                    <el-button size="small" type="primary">上传</el-button>
+                  </el-upload>
+                </div>
+              </el-form-item>
             </el-form>
           </div>
         </div>
@@ -216,7 +231,8 @@ export default {
         searchValue: '',
         page: 1,
         size: 10
-      }
+      },
+      fileList: []
     }
   },
   created () {
@@ -253,6 +269,7 @@ export default {
         email: '',
         enabled: true
       }
+      this.fileList = []
     },
     async handleIsSave () {
       this.isTable = false
@@ -263,8 +280,22 @@ export default {
       const res = await this.$get('/api/auth/user/' + id)
       this.handleLoading(false)
       this.editFormData = res.data
+      this.fileList = [{ name: '头像图片', url: this.editFormData.photo }]
       this.isTable = false
       this.isEdit = true
+    },
+    handleExceed () {
+      this.$message.warning('超出图片个数了~')
+      this.$refs.upload.clearFiles()
+    },
+    async handleUpload (content) {
+      const form = new FormData()
+      form.append('file', content.file)
+      form.append('userId', this.editFormData.id)
+      this.handleLoading(true)
+      await this.$put('/api/auth/photo/user', form)
+      this.getDataList()
+      this.handleLoading(false)
     },
     async handleIsTable () {
       if (this.isTable) {
@@ -330,6 +361,12 @@ export default {
   border-radius: 8px 8px 0 0;
   overflow: hidden;
   box-shadow: 0px 1px 0px #ccc;
+}
+
+.photo-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 45px;
 }
 
 .add-content {

@@ -52,6 +52,7 @@
             border
             style="width: 100%"
             :tree-props="treeProps"
+            :max-height="580"
           >
             <el-table-column prop="text" label="菜单名称" width="140">
             </el-table-column>
