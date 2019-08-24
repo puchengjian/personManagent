@@ -23,7 +23,10 @@ public class FtpUtils {
 
         try {
             int reply;
+//            ftp.setConnectTimeout();
             ftp.connect(host, port);// 连接FTP服务器
+            //线上配置
+            ftp.enterLocalPassiveMode();
             // 如果采用默认端口，可以使用ftp.connect(host)的方式直接连接FTP服务器
             ftp.login(username, password);// 登录
             reply = ftp.getReplyCode();
@@ -31,8 +34,6 @@ public class FtpUtils {
                 ftp.disconnect();
                 return flag;
             }
-            //部署到线上配置
-            ftp.enterLocalPassiveMode();
 
             if (!ftp.changeWorkingDirectory(imagePath)) {
                 ftp.makeDirectory(imagePath);
