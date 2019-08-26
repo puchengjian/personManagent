@@ -19,8 +19,9 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(data => {
   if (data.data != null && data.data !== '') {
+    console.log(12)
     if (data.status === 200 && data.data.status === 401) {
-      Message.warning(data.data.msg)
+      Message.warning('登录信息已过期,将在三秒后跳转至登录页')
       sessionStorage.removeItem('token')
       setTimeout(() => {
         router.push('/login')
@@ -45,7 +46,7 @@ axios.interceptors.response.use(data => {
   return data
 }, err => {
   if (err.response.status === 401) {
-    this.$message.warning('您未登录,将在三秒后跳转至登录页')
+    this.$message.warning('登录信息已过期,将在三秒后跳转至登录页')
     sessionStorage.removeItem('token')
     setTimeout(() => {
       router.push('/login')

@@ -85,16 +85,6 @@
 <script>
 export default {
   methods: {
-    isLogin () {
-      if (sessionStorage.getItem('token') === '' || sessionStorage.getItem('token') === null || sessionStorage.getItem('token') === 'undefined' || sessionStorage.getItem('token') === undefined) {
-        this.$message.warning('您未登录,将在三秒后跳转至登录页')
-        setTimeout(() => {
-          this.$router.push('/login')
-          this.$get('/api/logout')
-        }, 3000)
-        return false
-      }
-    },
     handleCommand (cmd) {
       var _this = this
       if (cmd === 'logout') {

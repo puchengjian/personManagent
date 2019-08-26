@@ -9,7 +9,7 @@ Configuration:
 #      - name: log.level.console
 #        value: info
       - name: log.level.console
-        value: warn
+        value: info
       - name: log.path
         value: /home/logs/person
 #        value: ./logs/person

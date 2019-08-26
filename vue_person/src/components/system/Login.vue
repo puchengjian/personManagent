@@ -65,9 +65,9 @@ export default {
         })
       _this.loading = false
     },
-    setCookie () { // 配合cookie 检测session
+    setCookie () { // 设置 token和cookie
       let date = new Date()
-      console.log(date.getTime() + 60 * 60 * 1000)
+      // console.log(date.getTime() + 60 * 60 * 1000)
       date.setTime(date.getTime() + 60 * 60 * 1000) // 设置date为当前时间+60分
       document.cookie = 'key=seesionTime; expires=' + date.toGMTString()
     }

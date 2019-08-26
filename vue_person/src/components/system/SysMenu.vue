@@ -185,7 +185,7 @@ export default {
       loading: false, // 加载框
       isEdit: true, // 新增和编辑操作表示
       dataList: [], // 表格集合
-      editFormData: {},
+      editFormData: {}, // 表单默认数据结构
       total: 0,
       queryListParam: { // 查询列表参数列表
         searchKey: 'menu_name',
@@ -206,19 +206,12 @@ export default {
     handleLoading (val) { // loading
       this.loading = val
     },
-    handleSearch () {
+    handleSearch () { // 搜索回调
       this.page = 1
       this.size = 10
       this.getDataList()
     },
-    async getDataList () {
-      this.handleLoading(true)
-      const res = await this.$get('/api/auth/menu', this.queryListParam)
-      this.handleLoading(false)
-      this.dataList = res.data
-      this.total = res.total
-    },
-    initEditFormData () {
+    initEditFormData () { // 初始化表单默认数据结构
       this.editFormData = {
         parentId: '',
         menuName: '',
@@ -229,7 +222,14 @@ export default {
         type: 1
       }
     },
-    async handleIsEdit (id) {
+    async getDataList () { // 获取表格集合
+      this.handleLoading(true)
+      const res = await this.$get('/api/auth/menu', this.queryListParam)
+      this.handleLoading(false)
+      this.dataList = res.data
+      this.total = res.total
+    },
+    async handleIsEdit (id) { // 获取修改的菜单数据
       this.handleLoading(true)
       const res = await this.$get('/api/auth/menu/' + id)
       this.handleLoading(false)
@@ -245,9 +245,10 @@ export default {
     },
     async handleSave () {
       if (this.isEdit) {
-        this.handleEditSave()
+        this.handleEditSave() // 修改菜单
         return
       }
+      // 新增菜单
       this.handleLoading(true)
       const res = await this.$post('/api/auth/menu', this.editFormData)
       this.handleLoading(false)
@@ -255,7 +256,7 @@ export default {
       this.getDataList()
       this.isTable = true
     },
-    async handleEditSave () {
+    async handleEditSave () { // 修改函数
       this.handleLoading(true)
       const res = await this.$put('/api/auth/menu', this.editFormData)
       this.handleLoading(false)
@@ -263,7 +264,7 @@ export default {
       this.getDataList()
       this.isTable = true
     },
-    handleDel (id) {
+    handleDel (id) { // 删除菜单提示
       this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -272,7 +273,7 @@ export default {
         this.enterDel(id)
       }).catch(() => { })
     },
-    async enterDel (id) {
+    async enterDel (id) { // 删除菜单
       this.handleLoading(true)
       const res = await this.$delete('/api/auth/menu/' + id)
       this.handleLoading(false)

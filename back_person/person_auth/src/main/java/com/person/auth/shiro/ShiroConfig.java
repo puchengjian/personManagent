@@ -87,7 +87,9 @@ public class ShiroConfig {
     @Bean
     public RedisSessionDAO redisSessionDAO() {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        //单位秒 一小时过期
         redisSessionDAO.setExpire(3600);
+//        redisSessionDAO.setExpire(60);
         redisSessionDAO.setRedisManager(redisManager());
 
         return redisSessionDAO;

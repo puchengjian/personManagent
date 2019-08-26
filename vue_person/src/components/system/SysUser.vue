@@ -198,8 +198,7 @@
                     :file-list="fileList"
                     :http-request="handleUpload"
                     multiple
-                    :limit="1"
-                    :on-exceed="handleExceed"
+                    :on-change="handleImgChange"
                     list-type="picture"
                     accept="image/jpeg,image/gif,image/png"
                   >
@@ -223,7 +222,7 @@ export default {
       loading: false, // 加载框
       isEdit: true, // 新增和编辑操作表示
       dataList: [], // 表格集合
-      editFormData: {},
+      editFormData: {}, // 表单默认数据结构
       roleList: [], // 角色集合
       total: 0,
       queryListParam: { // 查询列表参数列表
@@ -244,20 +243,12 @@ export default {
     handleLoading (val) { // loading
       this.loading = val
     },
-    handleSearch () {
+    handleSearch () { // 搜索回调
       this.page = 1
       this.size = 10
       this.getDataList()
     },
-    async getDataList () {
-      this.handleLoading(true)
-      const res = await this.$get('/api/auth/user', this.queryListParam)
-      this.handleLoading(false)
-      if (res.status !== 200) return this.$message.error(res.msg)
-      this.dataList = res.data
-      this.total = res.total
-    },
-    initEditFormData () {
+    initEditFormData () { // 初始化表单默认数据结构
       this.editFormData = {
         account: '',
         userName: '',
@@ -271,33 +262,45 @@ export default {
       }
       this.fileList = []
     },
-    async handleIsSave () {
+    handleFileList (fileUrl) { // 头像图片更换
+      this.fileList = [{ name: '头像图片', url: fileUrl }]
+    },
+    async getDataList () { // 获取表格集合
+      this.handleLoading(true)
+      const res = await this.$get('/api/auth/user', this.queryListParam)
+      this.handleLoading(false)
+      if (res.status !== 200) return this.$message.error(res.msg)
+      this.dataList = res.data
+      this.total = res.total
+    },
+    async handleIsSave () { // 区分新增和修改操作
       this.isTable = false
       this.isEdit = false
     },
-    async handleIsEdit (id) {
+    async handleIsEdit (id) { // 获取修改的用户数据
       this.handleLoading(true)
       const res = await this.$get('/api/auth/user/' + id)
       this.handleLoading(false)
       this.editFormData = res.data
-      this.fileList = [{ name: '头像图片', url: this.editFormData.photo }]
+      this.handleFileList(this.editFormData.photo)
       this.isTable = false
       this.isEdit = true
     },
-    handleExceed () {
-      this.$message.warning('超出图片个数了~')
+    handleImgChange (file) { // 图片change事件
       this.$refs.upload.clearFiles()
+      this.handleFileList(file.url)
     },
-    async handleUpload (content) {
+    async handleUpload (content) { // 修改用户头像
       const form = new FormData()
       form.append('file', content.file)
       form.append('userId', this.editFormData.id)
       this.handleLoading(true)
-      await this.$put('/api/auth/photo/user', form)
-      this.getDataList()
+      const res = await this.$put('/api/auth/photo/user', form)
       this.handleLoading(false)
+      if (res.status !== 200) return
+      this.getDataList()
     },
-    async handleIsTable () {
+    async handleIsTable () { // 导出excel
       if (this.isTable) {
         await this.$export('/api/auth/user/export', this.queryListParam).then((res) => {
           this.$message.success('下载成功~')
@@ -312,9 +315,10 @@ export default {
     },
     async handleSave () {
       if (this.isEdit) {
-        this.handleEditSave()
+        this.handleEditSave() // 修改用户
         return
       }
+      // 新增用户
       this.handleLoading(true)
       const res = await this.$post('/api/auth/user', this.editFormData)
       this.handleLoading(false)
@@ -322,7 +326,7 @@ export default {
       this.getDataList()
       this.isTable = true
     },
-    async handleEditSave () {
+    async handleEditSave () { // 修改函数
       this.handleLoading(true)
       const res = await this.$put('/api/auth/user', this.editFormData)
       this.handleLoading(false)
@@ -330,7 +334,7 @@ export default {
       this.getDataList()
       this.isTable = true
     },
-    handleDel (id) {
+    handleDel (id) { // 删除用户提示
       this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -339,14 +343,14 @@ export default {
         this.enterDel(id)
       }).catch(() => { })
     },
-    async enterDel (id) {
+    async enterDel (id) { // 删除用户
       this.handleLoading(true)
       const res = await this.$delete('/api/auth/user/' + id)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
     },
-    async handleRoleList () {
+    async handleRoleList () { // 获取角色下拉框集合
       const res = await this.$get('/api/auth/role')
       this.roleList = res.data
     }

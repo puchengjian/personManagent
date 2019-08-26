@@ -23,14 +23,14 @@ public class FtpUtils {
 
         try {
             int reply;
-//            ftp.setConnectTimeout();
             ftp.connect(host, port);// 连接FTP服务器
-            //线上配置
-            ftp.enterLocalPassiveMode();
+            log.info("ftp连接成功");
             // 如果采用默认端口，可以使用ftp.connect(host)的方式直接连接FTP服务器
             ftp.login(username, password);// 登录
+            log.info("ftp登录成功");
             reply = ftp.getReplyCode();
             if (!FTPReply.isPositiveCompletion(reply)) {
+                log.error("登录失败，状态码{}", reply);
                 ftp.disconnect();
                 return flag;
             }
@@ -39,12 +39,17 @@ public class FtpUtils {
                 ftp.makeDirectory(imagePath);
             }
             ftp.changeWorkingDirectory(imagePath);
+            //被动模式 服务端开端口，客户端连接
+            //主动模式 客户端开端口，服务器连接
+            //设置被动模式 默认主动模式 客户端不可控，防火墙等原因，需要服务端开启端口
+            ftp.enterLocalPassiveMode();
             ftp.setFileType(FTP.BINARY_FILE_TYPE);
             //上传文件
             if (!ftp.storeFile(fileName, inputStream)) {
                 log.error("storeFile失败！");
                 return flag;
             }
+            log.info("ftp上传成功");
             inputStream.close();
             ftp.logout();
             flag = true;
