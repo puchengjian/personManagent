@@ -40,21 +40,11 @@ public class UserController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private FtpUtils ftpUtils;
 
     @Value("${image.path}")
     private String imagePath;
-
-    @Value("${ftp.address}")
-    private String host;
-
-    @Value("${ftp.port}")
-    private Integer port;
-
-    @Value("${ftp.username}")
-    private String username;
-
-    @Value("${ftp.password}")
-    private String password;
 
     @Value("${ftp.image.path}")
     private String ftpImagePath;
@@ -146,16 +136,16 @@ public class UserController {
                 }
 
                 String fileName = FileUtils.getFileName(fileOriginalName);
-                if (!FtpUtils.uploadFile(host, port, username, password, ftpImagePath, fileName, file.getInputStream())) {
+                if (!ftpUtils.uploadFile(ftpImagePath, fileName, file.getInputStream()))
                     return SuccessOrFailure.FAILURE(HttpConst.BAD_REQUEST, "上传图片失败~");
-
-                }
 
                 String photo = imagePath + fileName;
                 flag = userService.updateUserPhoto(photo, userId);
             }
 
             if (flag) {
+                String[] photoArray = user.getPhoto().split("/");
+                ftpUtils.deleteFile(ftpImagePath, photoArray[photoArray.length - 1]);
                 return SuccessOrFailure.SUCCESS("上传成功~");
             } else {
                 return SuccessOrFailure.FAILURE(HttpConst.BAD_REQUEST, "上传失败~");
