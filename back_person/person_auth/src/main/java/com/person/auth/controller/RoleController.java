@@ -10,6 +10,7 @@ import com.person.json.SuccessOrFailure;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,7 @@ public class RoleController {
 
     @GetMapping("/role")
     @ApiOperation(value = "查询全部角色", response = Role.class)
+    @RequiresPermissions("role:sel")
     SuccessOrFailure listRole(@Valid ListRoleReq req) {
         try {
             List<Role> roles = roleService.listRole(req);
@@ -45,6 +47,7 @@ public class RoleController {
 
     @GetMapping("/role/{id}")
     @ApiOperation(value = "根据Id查询角色", response = Role.class)
+    @RequiresPermissions("role:get")
     SuccessOrFailure findRoleById(@PathVariable String id) {
         try {
             Role role = roleService.findRoleById(id);

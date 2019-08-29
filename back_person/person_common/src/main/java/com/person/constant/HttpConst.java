@@ -22,6 +22,11 @@ public class HttpConst {
     public static final Integer UNAUTHORIZED = 401;
 
     /**
+     * 服务器理解请求客户端的请求，但是拒绝执行此请求
+     */
+    public static final Integer FORBIDDEN = 403;
+
+    /**
      * 服务器内部错误，无法完成请求
      */
     public static final Integer INTERNAL_SERVER_ERROR = 500;

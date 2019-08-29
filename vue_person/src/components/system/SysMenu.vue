@@ -80,15 +80,20 @@
               <template slot-scope="scope">
                 <el-button
                   type="primary"
+                  v-show="scope.row.type === '菜单'"
                   @click="handleIsTable(scope.row.id)"
                   size="mini"
                   >添加</el-button
                 >
-                <el-button @click="handleIsEdit(scope.row.id)" size="mini"
+                <el-button
+                  @click="handleIsEdit(scope.row.id)"
+                  size="mini"
+                  v-show="scope.row.type === '菜单'"
                   >编辑</el-button
                 >
                 <el-button
                   @click="handleDel(scope.row.id)"
+                  v-show="scope.row.type === '菜单'"
                   type="danger"
                   size="mini"
                   >删除</el-button
@@ -126,7 +131,7 @@
                 <span class="important">*</span>
               </el-form-item>
               <el-form-item
-                v-show="editFormData.type === 1 ? true : false"
+                v-show="editFormData.type === 2 ? false : true"
                 label="组件"
               >
                 <el-input
@@ -135,11 +140,17 @@
                 ></el-input>
                 <span class="important">*</span>
               </el-form-item>
-              <el-form-item label="图标">
+              <el-form-item
+                label="图标"
+                v-show="editFormData.type === 2 ? false : true"
+              >
                 <el-input v-model="editFormData.icon"></el-input>
                 <span class="important">*</span>
               </el-form-item>
-              <el-form-item label="路径">
+              <el-form-item
+                label="路径"
+                v-show="editFormData.type === 2 ? false : true"
+              >
                 <el-input v-model="editFormData.path"></el-input>
                 <span class="important">*</span>
               </el-form-item>

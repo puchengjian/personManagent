@@ -17,7 +17,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    User login(@Param("account") String account);
+    UserVO login(@Param("account") String account);
 
     List<UserVO> listUser(ListUserReq req);
 

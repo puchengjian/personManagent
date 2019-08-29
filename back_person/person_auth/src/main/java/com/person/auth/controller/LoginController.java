@@ -41,7 +41,7 @@ public class LoginController {
             UsernamePasswordToken token = new UsernamePasswordToken(loginReq.getAccount(), md5PassWord);
             subject.login(token);
         } catch (Exception e) {
-            return SuccessOrFailure.FAILURE(HttpConst.UNAUTHORIZED, e.getMessage());
+            return SuccessOrFailure.FAILURE(HttpConst.FORBIDDEN, e.getMessage());
         }
 
         return SuccessOrFailure.SUCCESS(shiroService.getUser(), shiroService.getSession().getId());

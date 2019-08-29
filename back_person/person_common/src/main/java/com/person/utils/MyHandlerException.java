@@ -20,7 +20,7 @@ public class MyHandlerException {
     @ExceptionHandler({AuthorizationException.class, UnauthorizedException.class})
     @ResponseBody
     public SuccessOrFailure authorizationException(Exception e) {
-        return SuccessOrFailure.FAILURE(HttpConst.UNAUTHORIZED, "您的权限不足，无法操作~");
+        return SuccessOrFailure.FAILURE(HttpConst.FORBIDDEN, "您的权限不足，无法操作~");
     }
 
 

@@ -17,7 +17,7 @@ public interface UserService {
     /**
      * 登录
      */
-    User login(String account);
+    UserVO login(String account);
 
     /**
      * 查询全部用户

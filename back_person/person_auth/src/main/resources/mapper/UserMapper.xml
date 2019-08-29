@@ -6,10 +6,12 @@
         u.id, u.user_name, u.account, u.password, u.user_age, u.phone, u.photo, u.email, u.enabled, u.create_time, u.update_time
     </sql>
 
-    <select id="login" resultType="user">
-        select
+    <select id="login" resultType="userVO">
+        select r.role_name, r.id roleId,
         <include refid="userSql"/>
         from sys_user u
+        left join sys_user_role sur on u.id = sur.user_id
+        left join sys_role r on sur.role_id = r.id
         where account = #{account}
     </select>
 

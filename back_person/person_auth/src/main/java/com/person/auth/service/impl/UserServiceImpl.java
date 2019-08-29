@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User login(String account) {
+    public UserVO login(String account) {
         return userMapper.login(account);
     }
 

@@ -109,6 +109,16 @@ public class RedisService {
     }
 
     /**
+     *  删除多个元素
+     * @param keys 元素key
+     */
+    public void remove(final List<String> keys) {
+        for (String key : keys) {
+            remove(key);
+        }
+    }
+
+    /**
      * 判断key是否存在
      * @param key key
      * @return Boolean

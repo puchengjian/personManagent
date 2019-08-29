@@ -9,6 +9,8 @@ import com.person.auth.pojo.entity.RoleMenu;
 import com.person.auth.pojo.vo.RoleVO;
 import com.person.auth.service.RoleMenuService;
 import com.person.auth.service.RoleService;
+import com.person.constant.RedisConst;
+import com.person.redis.RedisService;
 import com.person.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,9 @@ public class RoleServiceImpl implements RoleService {
     private RoleMapper roleMapper;
     @Autowired
     private RoleMenuService roleMenuService;
+    @Autowired
+    private RedisService redisService;
+
 
     @Override
     public List<Role> listRole(ListRoleReq req) {
@@ -65,6 +70,7 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public boolean updateRoleById(UpdateRoleReq req) {
         if (roleMapper.updateRoleById(req) > 0) {
+            redisService.remove(RedisConst.SHIRO_CACHE_KEY + req.getId());
             roleMenuService.deleteByRoleId(req.getId());
             roleMenuService.insertAll(req.getId(), req.getMenuIdList());
             return true;
@@ -77,6 +83,7 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public boolean deleteRoleById(String id) {
         if (roleMapper.deleteRoleById(id) > 0) {
+            redisService.remove(RedisConst.SHIRO_CACHE_KEY + id);
             roleMenuService.deleteByRoleId(id);
             return true;
         }

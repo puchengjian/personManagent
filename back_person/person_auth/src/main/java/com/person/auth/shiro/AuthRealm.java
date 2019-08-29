@@ -1,8 +1,10 @@
 package com.person.auth.shiro;
 
 import com.person.auth.pojo.entity.User;
+import com.person.auth.pojo.vo.UserVO;
 import com.person.auth.service.MenuService;
 import com.person.auth.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -17,6 +19,7 @@ import java.util.List;
  * @author: pzy
  * @create: 2019/8/5 16:26
  */
+@Slf4j
 public class AuthRealm extends AuthorizingRealm {
 
     @Autowired
@@ -29,6 +32,7 @@ public class AuthRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        log.warn("进入角色授权！");
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         User user = shiroService.getUser();
         List<String> perms = menuService.listMenuPerms(user.getId());
@@ -43,7 +47,7 @@ public class AuthRealm extends AuthorizingRealm {
         String account = (String) token.getPrincipal();
         String password = new String((char[]) token.getCredentials());
 
-        User user = userService.login(account);
+        UserVO user = userService.login(account);
         if (user == null) {
             throw  new UnknownAccountException("账号不正确~");
         }

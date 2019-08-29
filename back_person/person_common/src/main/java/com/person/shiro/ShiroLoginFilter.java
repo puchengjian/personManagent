@@ -1,4 +1,4 @@
-package com.person.utils;
+package com.person.shiro;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -56,7 +56,7 @@ public class ShiroLoginFilter extends FormAuthenticationFilter {
         httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
         httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json");
-        httpServletResponse.getWriter().write(JSON.toJSONString(SuccessOrFailure.FAILURE(HttpConst.UNAUTHORIZED, "请先登录")));
+        httpServletResponse.getWriter().write(JSON.toJSONString(SuccessOrFailure.FAILURE(HttpConst.UNAUTHORIZED, "登录信息已过期,将在三秒后跳转至登录页")));
         return false;
     }
 

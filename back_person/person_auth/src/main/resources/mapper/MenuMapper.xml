@@ -61,7 +61,7 @@
 
     <insert id="insertMenu" parameterType="insertMenuReq">
         insert into sys_menu (
-        id, menu_name, path, component, icon, perms, require_auth,
+        id, menu_name, path, component, icon, perms, type, require_auth,
         parent_id, create_time, update_time
         )
         values (
