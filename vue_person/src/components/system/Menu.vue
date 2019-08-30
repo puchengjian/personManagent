@@ -27,12 +27,11 @@
         </div>
         <div class="btnswiper">
           <el-button
-            v-show="!isTable"
             size="medium"
-            type="info"
-            @click="handleIsTable"
+            :type="isTable ? 'primary' : 'info'"
+            @click="handleIsTable(0)"
           >
-            返回列表
+            {{ isTable ? "添加菜单" : "返回列表" }}
           </el-button>
           <el-button
             :type="isTable ? 'danger' : 'primary'"
@@ -59,6 +58,8 @@
             <el-table-column prop="path" label="路径" width="120">
             </el-table-column>
             <el-table-column prop="component" label="组件" width="120">
+            </el-table-column>
+            <el-table-column prop="folder" label="文件夹" width="120">
             </el-table-column>
             <el-table-column prop="icon" label="图标" width="180">
             </el-table-column>
@@ -137,6 +138,16 @@
                 <el-input
                   :disabled="isEdit"
                   v-model="editFormData.component"
+                ></el-input>
+                <span class="important">*</span>
+              </el-form-item>
+              <el-form-item
+                v-show="editFormData.type === 2 ? false : true"
+                label="文件夹"
+              >
+                <el-input
+                  :disabled="isEdit"
+                  v-model="editFormData.folder"
                 ></el-input>
                 <span class="important">*</span>
               </el-form-item>
@@ -227,6 +238,7 @@ export default {
         parentId: '',
         menuName: '',
         component: '',
+        folder: '',
         icon: '',
         path: '',
         requireAuth: true,

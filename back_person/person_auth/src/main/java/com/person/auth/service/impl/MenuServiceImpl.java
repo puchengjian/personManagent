@@ -117,6 +117,7 @@ public class MenuServiceImpl implements MenuService {
             tree.setPath(menu.getPath());
             tree.setIcon(menu.getIcon());
             tree.setComponent(menu.getComponent());
+            tree.setFolder(menu.getFolder());
             Map<String, Object> map = new HashMap<>();
             map.put("requireAuth", menu.isRequireAuth());
             tree.setMeta(map);

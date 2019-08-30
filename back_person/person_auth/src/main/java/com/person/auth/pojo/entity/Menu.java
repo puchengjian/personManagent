@@ -28,6 +28,9 @@ public class Menu implements Serializable {
 
     private String component;
 
+    @ApiModelProperty("视图所在文件夹")
+    private String folder;
+
     @ApiModelProperty("图标")
     private String icon;
 
@@ -57,8 +60,8 @@ public class Menu implements Serializable {
     public String toString() {
         String builder = "菜单信息[ " +
                 " 主键: " + id +
-                ",菜单名称: " + menuName + "，路径: " + path + ", 跳转页面: " + component +
-                ",图标: " + icon + "，需要登录: " + requireAuth + ", 类型: " + (type == 1 ? "菜单" :"按钮") +
+                ",菜单名称: " + menuName + "，路径: " + path + ", 跳转页面: " + component + ", 文件夹" + folder +
+                ",图标: " + icon + "，需要登录: " + requireAuth + ", 类型: " + (type == 1 ? "菜单" : "按钮") +
                 ",权限: " + perms + "，父级: " + parentId + ", 启用状态: " + enabled +
                 ",创建时间: " + createTime + "，更新时间: " + updateTime +
                 " ]";

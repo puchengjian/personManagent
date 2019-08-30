@@ -32,6 +32,9 @@ public class Tree<T> {
     @ApiModelProperty("页面")
     private String component;
 
+    @ApiModelProperty("文件夹")
+    private String folder;
+
     private String icon;
 
     @ApiModelProperty("类型")
@@ -54,7 +57,7 @@ public class Tree<T> {
     public String toString() {
         String builder = "树形数据[ " +
                 " 主键: " + id +
-                ",菜单名称: " + text + "，路径: " + path + ", 跳转页面: " + component +
+                ",菜单名称: " + text + "，路径: " + path + ", 跳转页面: " + component + ", 文件夹" + folder +
                 ",类型: " + type + "，权限: " + perms + ", 状态: " + enabled +
                 ",图标: " + icon + "，meta: " + meta + "，父级: " + parentId +
                 ", 子节点:" + children +

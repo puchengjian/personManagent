@@ -33,6 +33,7 @@ export const formatRoutes = (routes) => {
     let {
       path,
       component,
+      folder,
       text,
       meta,
       icon,
@@ -44,9 +45,9 @@ export const formatRoutes = (routes) => {
     let fmRouter = {
       path: path,
       component (resolve) {
-        if (component.startsWith('Home')) {
+        if (folder.startsWith('Home')) {
           require(['@/components/' + component + '.vue'], resolve)
-        } else if (component.startsWith('Sys')) {
+        } else if (folder.startsWith('sys')) {
           require(['@/components/system/' + component + '.vue'], resolve)
         }
       },
