@@ -20,8 +20,8 @@ public class ShiroMap {
     public LinkedHashMap<String, String> loadFilterMap() {
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
 
-        map.put("/api/person/v1/login", "anon");
-        map.put("/api/person/v1/logout", "anon");
+        map.put("/login", "anon");
+        map.put("/logout", "anon");
         for (String url : ENABLED_URL) {
             map.put(url, "anon");
         }

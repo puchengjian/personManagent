@@ -1,10 +1,10 @@
 package com.person.auth.controller;
 
 import com.person.auth.network.bean.LoginReq;
-import com.person.auth.shiro.ShiroService;
 import com.person.constant.HttpConst;
 import com.person.json.SuccessOrFailure;
 import com.person.redis.RedisService;
+import com.person.auth.shiro.ShiroService;
 import com.person.utils.MD5Utils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,11 +23,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api(description = "登录管理")
 @Slf4j
-@RequestMapping("/api/person/v1")
 public class LoginController {
 
-    @Autowired
-    private RedisService redisService;
     @Autowired
     private ShiroService shiroService;
 

@@ -61,14 +61,13 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        String builder = "用户信息[ " +
+
+        return "用户信息[ " +
                 " 主键: " + id +
                 ",姓名: " + userName + "，年龄: " + userAge + ", 手机号: " + phone +
                 ",账号: " + account + "，密码: " + password + ", 邮箱: " + email +
                 ",状态: " + enabled + "，创建时间: " + createTime + ", 更新时间: " + updateTime +
                 " ]";
-
-        return builder;
     }
 
 }

@@ -30,7 +30,7 @@ public class SwaggerConfig {
                 .pathMapping("/")
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .apis(RequestHandlerSelectors.basePackage("com.person.auth.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.person"))
                 .build();
     }
 

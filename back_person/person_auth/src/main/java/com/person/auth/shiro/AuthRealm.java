@@ -2,8 +2,7 @@ package com.person.auth.shiro;
 
 import com.person.auth.pojo.entity.User;
 import com.person.auth.pojo.vo.UserVO;
-import com.person.auth.service.MenuService;
-import com.person.auth.service.UserService;
+import com.person.auth.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -12,6 +11,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
 
@@ -22,10 +22,8 @@ import java.util.List;
 @Slf4j
 public class AuthRealm extends AuthorizingRealm {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private MenuService menuService;
+    @Resource
+    private LoginService loginService;
     @Autowired
     private ShiroService shiroService;
 
@@ -35,7 +33,7 @@ public class AuthRealm extends AuthorizingRealm {
         log.warn("进入角色授权！");
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         User user = shiroService.getUser();
-        List<String> perms = menuService.listMenuPerms(user.getId());
+        List<String> perms = loginService.listMenuPerms(user.getId());
         simpleAuthorizationInfo.setStringPermissions(new HashSet<>(perms));
 
         return simpleAuthorizationInfo;
@@ -47,7 +45,7 @@ public class AuthRealm extends AuthorizingRealm {
         String account = (String) token.getPrincipal();
         String password = new String((char[]) token.getCredentials());
 
-        UserVO user = userService.login(account);
+        UserVO user = loginService.login(account);
         if (user == null) {
             throw  new UnknownAccountException("账号不正确~");
         }

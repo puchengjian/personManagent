@@ -34,9 +34,9 @@ Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'up
 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:370) ~[spring-beans-5.0.10.RELEASE.jar:5.0.10.RELEASE]
 	... 19 more
 [2019-08-22 11:21:19,154] [ERROR] (org.apache.juli.logging.DirectJDKLog:182) Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.http.converter.HttpMessageConversionException: Type definition error: [simple type, class org.springframework.web.multipart.MultipartFile]; nested exception is com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `org.springframework.web.multipart.MultipartFile` (no Creators, like default construct, exist): abstract types either need to be mapped to concrete types, have custom deserializer, or contain additional type information
- at [Source: (PushbackInputStream); line: 1, column: 336] (through reference chain: com.person.auth.network.bean.user.UpdateUserReq["file"])] with root cause
+ at [Source: (PushbackInputStream); line: 1, column: 336] (through reference chain: UpdateUserReq["file"])] with root cause
 com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `org.springframework.web.multipart.MultipartFile` (no Creators, like default construct, exist): abstract types either need to be mapped to concrete types, have custom deserializer, or contain additional type information
- at [Source: (PushbackInputStream); line: 1, column: 336] (through reference chain: com.person.auth.network.bean.user.UpdateUserReq["file"])
+ at [Source: (PushbackInputStream); line: 1, column: 336] (through reference chain: UpdateUserReq["file"])
 	at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:67) ~[jackson-databind-2.9.7.jar:2.9.7]
 	at com.fasterxml.jackson.databind.DeserializationContext.reportBadDefinition(DeserializationContext.java:1452) ~[jackson-databind-2.9.7.jar:2.9.7]
 	at com.fasterxml.jackson.databind.DeserializationContext.handleMissingInstantiator(DeserializationContext.java:1028) ~[jackson-databind-2.9.7.jar:2.9.7]
@@ -118,9 +118,9 @@ com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct 
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.5.34.jar:8.5.34]
 	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_181]
 [2019-08-22 11:22:18,854] [ERROR] (org.apache.juli.logging.DirectJDKLog:182) Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.http.converter.HttpMessageConversionException: Type definition error: [simple type, class org.springframework.web.multipart.MultipartFile]; nested exception is com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `org.springframework.web.multipart.MultipartFile` (no Creators, like default construct, exist): abstract types either need to be mapped to concrete types, have custom deserializer, or contain additional type information
- at [Source: (PushbackInputStream); line: 1, column: 336] (through reference chain: com.person.auth.network.bean.user.UpdateUserReq["file"])] with root cause
+ at [Source: (PushbackInputStream); line: 1, column: 336] (through reference chain: UpdateUserReq["file"])] with root cause
 com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `org.springframework.web.multipart.MultipartFile` (no Creators, like default construct, exist): abstract types either need to be mapped to concrete types, have custom deserializer, or contain additional type information
- at [Source: (PushbackInputStream); line: 1, column: 336] (through reference chain: com.person.auth.network.bean.user.UpdateUserReq["file"])
+ at [Source: (PushbackInputStream); line: 1, column: 336] (through reference chain: UpdateUserReq["file"])
 	at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:67) ~[jackson-databind-2.9.7.jar:2.9.7]
 	at com.fasterxml.jackson.databind.DeserializationContext.reportBadDefinition(DeserializationContext.java:1452) ~[jackson-databind-2.9.7.jar:2.9.7]
 	at com.fasterxml.jackson.databind.DeserializationContext.handleMissingInstantiator(DeserializationContext.java:1028) ~[jackson-databind-2.9.7.jar:2.9.7]
@@ -201,9 +201,9 @@ com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct 
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [?:1.8.0_181]
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.5.34.jar:8.5.34]
 	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_181]
-[2019-08-22 11:30:20,130] [ERROR] (com.person.auth.controller.UserController:134) 修改用户信息异常:{}
+[2019-08-22 11:30:20,130] [ERROR] (com.person.system.controller.UserController:134) 修改用户信息异常:{}
 java.lang.NullPointerException: null
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:110) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:110) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor686.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]
@@ -272,9 +272,9 @@ java.lang.NullPointerException: null
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [?:1.8.0_181]
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.5.34.jar:8.5.34]
 	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_181]
-[2019-08-22 11:30:39,977] [ERROR] (com.person.auth.controller.UserController:134) 修改用户信息异常:{}
+[2019-08-22 11:30:39,977] [ERROR] (com.person.system.controller.UserController:134) 修改用户信息异常:{}
 java.lang.NullPointerException: null
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:110) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:110) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor686.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]
@@ -344,9 +344,9 @@ java.lang.NullPointerException: null
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.5.34.jar:8.5.34]
 	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_181]
 [2019-08-22 12:21:29,665] [ERROR] (org.apache.juli.logging.DirectJDKLog:182) Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.http.converter.HttpMessageConversionException: Type definition error: [simple type, class org.springframework.web.multipart.MultipartFile]; nested exception is com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `org.springframework.web.multipart.MultipartFile` (no Creators, like default construct, exist): abstract types either need to be mapped to concrete types, have custom deserializer, or contain additional type information
- at [Source: (PushbackInputStream); line: 1, column: 398] (through reference chain: com.person.auth.network.bean.user.UpdateUserReq["file"])] with root cause
+ at [Source: (PushbackInputStream); line: 1, column: 398] (through reference chain: UpdateUserReq["file"])] with root cause
 com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `org.springframework.web.multipart.MultipartFile` (no Creators, like default construct, exist): abstract types either need to be mapped to concrete types, have custom deserializer, or contain additional type information
- at [Source: (PushbackInputStream); line: 1, column: 398] (through reference chain: com.person.auth.network.bean.user.UpdateUserReq["file"])
+ at [Source: (PushbackInputStream); line: 1, column: 398] (through reference chain: UpdateUserReq["file"])
 	at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:67) ~[jackson-databind-2.9.7.jar:2.9.7]
 	at com.fasterxml.jackson.databind.DeserializationContext.reportBadDefinition(DeserializationContext.java:1452) ~[jackson-databind-2.9.7.jar:2.9.7]
 	at com.fasterxml.jackson.databind.DeserializationContext.handleMissingInstantiator(DeserializationContext.java:1028) ~[jackson-databind-2.9.7.jar:2.9.7]
@@ -573,7 +573,7 @@ java.io.IOException: java.io.FileNotFoundException: C:\Users\dw\AppData\Local\Te
 	at org.apache.catalina.core.ApplicationPart.write(ApplicationPart.java:122) ~[tomcat-embed-core-8.5.34.jar:8.5.34]
 	at org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile.transferTo(StandardMultipartHttpServletRequest.java:255) ~[spring-web-5.0.10.RELEASE.jar:5.0.10.RELEASE]
 	at com.person.utils.FileUtils.updloadFile(FileUtils.java:33) [classes/:?]
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor849.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]
@@ -655,7 +655,7 @@ java.io.IOException: java.io.FileNotFoundException: C:\Users\dw\AppData\Local\Te
 	at org.apache.catalina.core.ApplicationPart.write(ApplicationPart.java:122) ~[tomcat-embed-core-8.5.34.jar:8.5.34]
 	at org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile.transferTo(StandardMultipartHttpServletRequest.java:255) ~[spring-web-5.0.10.RELEASE.jar:5.0.10.RELEASE]
 	at com.person.utils.FileUtils.updloadFile(FileUtils.java:33) [classes/:?]
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor859.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]
@@ -737,7 +737,7 @@ java.io.IOException: java.io.FileNotFoundException: C:\Users\dw\AppData\Local\Te
 	at org.apache.catalina.core.ApplicationPart.write(ApplicationPart.java:122) ~[tomcat-embed-core-8.5.34.jar:8.5.34]
 	at org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile.transferTo(StandardMultipartHttpServletRequest.java:255) ~[spring-web-5.0.10.RELEASE.jar:5.0.10.RELEASE]
 	at com.person.utils.FileUtils.updloadFile(FileUtils.java:33) [classes/:?]
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor859.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]
@@ -819,7 +819,7 @@ java.io.IOException: java.io.FileNotFoundException: C:\Users\dw\AppData\Local\Te
 	at org.apache.catalina.core.ApplicationPart.write(ApplicationPart.java:122) ~[tomcat-embed-core-8.5.34.jar:8.5.34]
 	at org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile.transferTo(StandardMultipartHttpServletRequest.java:255) ~[spring-web-5.0.10.RELEASE.jar:5.0.10.RELEASE]
 	at com.person.utils.FileUtils.updloadFile(FileUtils.java:33) [classes/:?]
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor859.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]
@@ -901,7 +901,7 @@ java.io.IOException: java.io.FileNotFoundException: C:\Users\dw\AppData\Local\Te
 	at org.apache.catalina.core.ApplicationPart.write(ApplicationPart.java:122) ~[tomcat-embed-core-8.5.34.jar:8.5.34]
 	at org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile.transferTo(StandardMultipartHttpServletRequest.java:255) ~[spring-web-5.0.10.RELEASE.jar:5.0.10.RELEASE]
 	at com.person.utils.FileUtils.updloadFile(FileUtils.java:33) [classes/:?]
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor174.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]
@@ -983,7 +983,7 @@ java.io.IOException: java.io.FileNotFoundException: D:\home\tools\nginx\personMa
 	at org.apache.catalina.core.ApplicationPart.write(ApplicationPart.java:122) ~[tomcat-embed-core-8.5.34.jar:8.5.34]
 	at org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile.transferTo(StandardMultipartHttpServletRequest.java:255) ~[spring-web-5.0.10.RELEASE.jar:5.0.10.RELEASE]
 	at com.person.utils.FileUtils.updloadFile(FileUtils.java:33) [classes/:?]
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor208.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]
@@ -1067,7 +1067,7 @@ java.io.IOException: java.io.FileNotFoundException: D:\home\tools\nginx\personMa
 	at com.person.utils.FileUtils$$M$_jr_2DE231213F3EFA08_1.updloadFile(FileUtils.java:34) ~[classes/:?]
 	at sun.reflect.GeneratedMethodAccessor217.invoke(Unknown Source) ~[?:?]
 	at com.zeroturnaround.jrebelbase.facade.Forward.invokeWithParams2(SourceFile:113) ~[?:1.8.0_181]
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor208.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]
@@ -1150,7 +1150,7 @@ java.io.IOException: java.io.FileNotFoundException: D:\home\tools\nginx\personMa
 	at org.apache.catalina.core.ApplicationPart.write(ApplicationPart.java:122) ~[tomcat-embed-core-8.5.34.jar:8.5.34]
 	at org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile.transferTo(StandardMultipartHttpServletRequest.java:255) ~[spring-web-5.0.10.RELEASE.jar:5.0.10.RELEASE]
 	at com.person.utils.FileUtils.updloadFile(FileUtils.java:33) [classes/:?]
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor743.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]
@@ -1232,7 +1232,7 @@ java.io.IOException: java.io.FileNotFoundException: C:\Users\dw\AppData\Local\Te
 	at org.apache.catalina.core.ApplicationPart.write(ApplicationPart.java:122) ~[tomcat-embed-core-8.5.34.jar:8.5.34]
 	at org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile.transferTo(StandardMultipartHttpServletRequest.java:255) ~[spring-web-5.0.10.RELEASE.jar:5.0.10.RELEASE]
 	at com.person.utils.FileUtils.updloadFile(FileUtils.java:33) [classes/:?]
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:134) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor743.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]
@@ -1316,7 +1316,7 @@ java.io.IOException: java.io.FileNotFoundException: C:\Users\dw\AppData\Local\Te
 	at com.person.utils.FileUtils$$M$_jr_2DE231213F3EFA08_5.uploadFile(FileUtils.java:36) ~[classes/:?]
 	at sun.reflect.GeneratedMethodAccessor820.invoke(Unknown Source) ~[?:?]
 	at com.zeroturnaround.jrebelbase.facade.Forward.invokeWithParams2(SourceFile:113) ~[?:1.8.0_181]
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:136) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:136) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor817.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]
@@ -1401,7 +1401,7 @@ java.io.IOException: java.io.FileNotFoundException: C:\Users\dw\AppData\Local\Te
 	at com.person.utils.FileUtils$$M$_jr_2DE231213F3EFA08_5.uploadFile(FileUtils.java:36) ~[classes/:?]
 	at sun.reflect.GeneratedMethodAccessor820.invoke(Unknown Source) ~[?:?]
 	at com.zeroturnaround.jrebelbase.facade.Forward.invokeWithParams2(SourceFile:113) ~[?:1.8.0_181]
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:136) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:136) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor817.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]
@@ -1486,7 +1486,7 @@ java.io.IOException: java.io.FileNotFoundException: C:\Users\dw\AppData\Local\Te
 	at com.person.utils.FileUtils$$M$_jr_2DE231213F3EFA08_5.uploadFile(FileUtils.java:36) ~[classes/:?]
 	at sun.reflect.GeneratedMethodAccessor820.invoke(Unknown Source) ~[?:?]
 	at com.zeroturnaround.jrebelbase.facade.Forward.invokeWithParams2(SourceFile:113) ~[?:1.8.0_181]
-	at com.person.auth.controller.UserController.updateUserById(UserController.java:136) [classes/:?]
+	at com.person.system.controller.UserController.updateUserById(UserController.java:136) [classes/:?]
 	at sun.reflect.GeneratedMethodAccessor817.invoke(Unknown Source) ~[?:?]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:45005) ~[?:1.8.0_181]
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_181]

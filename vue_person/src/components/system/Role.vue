@@ -90,33 +90,31 @@
         </div>
 
         <div class="add-content" v-show="!isTable">
-          <div class="formbox">
-            <el-form
-              label-position="right"
-              label-width="140px"
-              :model="editFormData"
-            >
-              <el-form-item label="角色名称">
-                <el-input v-model="editFormData.roleName"></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item label="角色名称">
-                <el-input v-model="editFormData.description"></el-input>
-              </el-form-item>
-              <el-form-item class="last-el-form-item" label="权限选择">
-                <el-tree
-                  style="padding-top: 7px;"
-                  :data="authTreeList"
-                  :props="defaultProps"
-                  show-checkbox
-                  node-key="id"
-                  :default-checked-keys="defaultCheckArr"
-                  :check-strictly="true"
-                  @check-change="handleCheckChange"
-                ></el-tree>
-              </el-form-item>
-            </el-form>
-          </div>
+          <el-form
+            label-position="right"
+            label-width="140px"
+            :model="editFormData"
+          >
+            <el-form-item label="角色名称">
+              <el-input v-model="editFormData.roleName"></el-input>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item label="角色名称">
+              <el-input v-model="editFormData.description"></el-input>
+            </el-form-item>
+            <el-form-item class="last-el-form-item" label="权限选择">
+              <el-tree
+                style="padding-top: 7px;"
+                :data="authTreeList"
+                :props="defaultProps"
+                show-checkbox
+                node-key="id"
+                :default-checked-keys="defaultCheckArr"
+                :check-strictly="true"
+                @check-change="handleCheckChange"
+              ></el-tree>
+            </el-form-item>
+          </el-form>
         </div>
       </div>
     </div>
@@ -173,8 +171,9 @@ export default {
     },
     async getDataList () {
       this.handleLoading(true)
-      const res = await this.$get('/api/auth/role', this.queryListParam)
+      const res = await this.$get('/api/system/role', this.queryListParam)
       this.handleLoading(false)
+      if (res.status !== 200) return
       this.dataList = res.data
       this.total = res.total
     },
@@ -189,8 +188,9 @@ export default {
     },
     async handleIsEdit (id) {
       this.handleLoading(true)
-      const res = await this.$get('/api/auth/role/' + id)
+      const res = await this.$get('/api/system/role/' + id)
       this.handleLoading(false)
+      if (res.status !== 200) return
       this.editFormData = res.data
       this.defaultCheckArr = res.data.menuIdList
       this.isTable = false
@@ -207,7 +207,7 @@ export default {
         return
       }
       this.handleLoading(true)
-      const res = await this.$post('/api/auth/role', this.editFormData)
+      const res = await this.$post('/api/system/role', this.editFormData)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
@@ -215,7 +215,7 @@ export default {
     },
     async handleEditSave () {
       this.handleLoading(true)
-      const res = await this.$put('/api/auth/role', this.editFormData)
+      const res = await this.$put('/api/system/role', this.editFormData)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
@@ -232,13 +232,13 @@ export default {
     },
     async enterDel (id) {
       this.handleLoading(true)
-      const res = await this.$delete('/api/auth/role/' + id)
+      const res = await this.$delete('/api/system/role/' + id)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
     },
     async handleTreeList () {
-      const res = await this.$get('/api/auth/menu')
+      const res = await this.$get('/api/system/menu')
       this.authTreeList = res.data
     }
   }

@@ -49,6 +49,8 @@ export const formatRoutes = (routes) => {
           require(['@/components/' + component + '.vue'], resolve)
         } else if (folder.startsWith('sys')) {
           require(['@/components/system/' + component + '.vue'], resolve)
+        } else if (folder.startsWith('chat')) {
+          require(['@/components/chat/' + component + '.vue'], resolve)
         }
       },
       name: text,

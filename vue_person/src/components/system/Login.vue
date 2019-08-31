@@ -54,7 +54,7 @@ export default {
     login: function () {
       this.loading = true
       var _this = this
-      _this.$post('/api/login', this.loginForm)
+      _this.$post('/login', this.loginForm)
         .then(resp => {
           if (resp.status === 200) {
             sessionStorage.setItem('token', resp.token)

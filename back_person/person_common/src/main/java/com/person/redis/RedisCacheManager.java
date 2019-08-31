@@ -30,7 +30,7 @@ public class RedisCacheManager implements CacheManager {
 
     @Override
     public <K, V> Cache<K, V> getCache(String name) throws CacheException {
-        log.error("get cache, name=" + name);
+        log.debug("get cache, name=" + name);
         Cache cache = caches.get(name);
 
         if (cache == null) {

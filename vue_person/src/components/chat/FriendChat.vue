@@ -1,23 +1,16 @@
 <template>
-  <div>
+  <div class="mainer">
     <el-container>
-      <el-aside width="160px">
+      <el-aside width="160px" style="background-color: rgb(240, 248, 248)">
+        <!-- @click="toggleFriend(hr)"  -->
         <div
+          v-for="user in dataList"
+          :key="user.id"
           class="friendListDiv"
-          v-for="hr in hrs"
-          :key="hr.id"
-          @click="toggleFriend(hr)"
-          v-bind:class="{ currentChatFriend: currentFriend.id == hr.id }"
+          v-bind:class="{ currentChatFriend: false }"
         >
-          <img :src="hr.userface" class="userfaceImg" />
-          <el-badge
-            :is-dot="
-              isDotMap.get(
-                'isDot#' + currentUser.username + '#' + hr.username
-              ) != null
-            "
-            >{{ hr.name }}</el-badge
-          >
+          <img :src="user.photo" class="userfaceImg" />
+          <el-badge is-dot="true">{{ user.userName }}</el-badge>
         </div>
         <div style="background-color: #20a0ff;height: 1px;width: 160px;" />
       </el-aside>
@@ -81,73 +74,79 @@
 export default {
   data () {
     return {
-      hrs: [],
+      dataList: [],
       msg: '',
       currentUser: this.$store.state.user,
       currentFriend: {}
     }
   },
-  computed: {
-    msgList: {
-      get: function () {
-        return this.$store.state.msgList
-      }
-    },
-    isDotMap: {
-      get: function () {
-        return this.$store.state.isDotMap
-      }
-    }
-  },
-  watch: {
-    msgList () {
-      document.getElementById('chatDiv').scrollTop = document.getElementById('chatDiv').scrollHeight
-    }
+  created () {
+    this.getDataList()
+    this.initEditFormData()
   },
   methods: {
-    sendMsg () {
-      var oldMsg = window.localStorage.getItem(this.$store.state.user.username + '#' + this.currentFriend.username)
-      if (oldMsg == null) {
-        oldMsg = []
-        oldMsg.push({ msg: this.msg, from: this.$store.state.user.username })
-        window.localStorage.setItem(this.$store.state.user.username + '#' + this.currentFriend.username, JSON.stringify(oldMsg))
-      } else {
-        var oldMsgJson = JSON.parse(oldMsg)
-        oldMsgJson.push({ msg: this.msg, from: this.$store.state.user.username })
-        window.localStorage.setItem(this.$store.state.user.username + '#' + this.currentFriend.username, JSON.stringify(oldMsgJson))
-      }
-      this.$store.state.stomp.send('/ws/chat', {}, this.msg + ';' + this.currentFriend.username)
-      this.msg = ''
-      this.updateChatDiv()
+    handleLoading (val) { // loading
+      this.loading = val
     },
-    updateChatDiv () {
-      var oldMsg = window.localStorage.getItem(this.currentUser.username + '#' + this.currentFriend.username)
-      if (oldMsg == null) {
-        this.$store.commit('updateMsgList', [])
-      } else {
-        this.$store.commit('updateMsgList', JSON.parse(oldMsg))
+    handleSearch () {
+      this.page = 1
+      this.size = 10
+      this.getDataList()
+    },
+    async getDataList () {
+      this.handleLoading(true)
+      const res = await this.$get('/api/chat/friend')
+      this.handleLoading(false)
+      this.dataList = res.data
+      // this.total = res.total
+    },
+    initEditFormData () {
+      this.editFormData = {
+        friendUserId: '',
+        userName: '',
+        phone: '',
+        photo: ''
       }
     },
-    toggleFriend (hr) {
-      // 切换数据
-      if (hr === this.currentFriend) {
-        return
-      }
-      this.currentFriend = hr
-      this.$store.commit('updateCurrentFriend', hr)
-      this.updateChatDiv()
-      this.$store.commit('removeValueDotMap', 'isDot#' + this.currentUser.username + '#' + hr.username)
-      document.getElementById('chatDiv').scrollTop = document.getElementById('chatDiv').scrollHeight
+    async handleSearchFriend () {
+      this.handleLoading(true)
+      const res = await this.$get('/api/auth/friend/' + this.editFormData.phone)
+      this.handleLoading(false)
+      if (res.status !== 200) return
+      this.editFormData = res.data
+      this.editFormData.friendUserId = res.data.id
+      this.isTable = false
+      this.isEdit = true
     },
-    loadHrs () {
-      var _this = this
-      this.getRequest('/chat/hrs').then(resp => {
-        _this.hrs = resp.data
-      })
+    async handleIsTable () {
+      this.initEditFormData()
+      this.isTable = !this.isTable
+      this.isEdit = false
+    },
+    async handleSave () {
+      this.handleLoading(true)
+      const res = await this.$post('/api/auth/friend', this.editFormData)
+      this.handleLoading(false)
+      if (res.status !== 200) return
+      this.getDataList()
+      this.isTable = true
+    },
+    handleDel (id) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.enterDel(id)
+      }).catch(() => { })
+    },
+    async enterDel (id) {
+      this.handleLoading(true)
+      const res = await this.$delete('/api/auth/friend/' + id)
+      this.handleLoading(false)
+      if (res.status !== 200) return
+      this.getDataList()
     }
-  },
-  mounted: function () {
-    this.loadHrs()
   }
 }
 </script>

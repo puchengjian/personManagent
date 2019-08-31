@@ -111,103 +111,101 @@
         </div>
 
         <div class="add-content" v-show="!isTable">
-          <div class="formbox">
-            <el-form
-              label-position="right"
-              label-width="140px"
-              :model="editFormData"
-            >
-              <el-form-item label="用户名">
-                <el-input
-                  v-model="editFormData.account"
-                  :disabled="isEdit"
-                  placeholder="如：pzy"
-                ></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item v-show="!isEdit" label="密码">
-                <el-input
-                  v-model="editFormData.password"
-                  placeholder="如：123456"
-                ></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item label="姓名">
-                <el-input
-                  v-model="editFormData.userName"
-                  placeholder="如：张三"
-                ></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item label="角色">
-                <el-select v-model="editFormData.roleId" placeholder="请选择">
-                  <el-option
-                    v-for="role in roleList"
-                    :disabled="role.admin"
-                    :key="role.id"
-                    :label="role.roleName"
-                    :value="role.id"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="状态">
-                <el-select v-model="editFormData.enabled" placeholder="请选择">
-                  <el-option :value="true" label="启用"></el-option>
-                  <el-option :value="false" label="禁用"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="年龄">
-                <el-input
-                  v-model="editFormData.userAge"
-                  placeholder="如：18"
-                ></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item label="手机号">
-                <el-input
-                  v-model="editFormData.phone"
-                  placeholder="如：152xxxx1414"
-                ></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-
-              <el-form-item label="邮箱">
-                <el-input
-                  v-model="editFormData.email"
-                  placeholder="如：152xxxx1414@163.com"
-                ></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item v-show="isEdit" label="创建时间">
-                <el-date-picker
-                  v-model="editFormData.createTime"
-                  type="datetime"
-                  :disabled="true"
-                  placeholder="如：2019-01-01 00:01:01"
+          <el-form
+            label-position="right"
+            label-width="140px"
+            :model="editFormData"
+          >
+            <el-form-item label="用户名">
+              <el-input
+                v-model="editFormData.account"
+                :disabled="isEdit"
+                placeholder="如：pzy"
+              ></el-input>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item v-show="!isEdit" label="密码">
+              <el-input
+                v-model="editFormData.password"
+                placeholder="如：123456"
+              ></el-input>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item label="姓名">
+              <el-input
+                v-model="editFormData.userName"
+                placeholder="如：张三"
+              ></el-input>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item label="角色">
+              <el-select v-model="editFormData.roleId" placeholder="请选择">
+                <el-option
+                  v-for="role in roleList"
+                  :disabled="role.admin"
+                  :key="role.id"
+                  :label="role.roleName"
+                  :value="role.id"
                 >
-                </el-date-picker>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item class="last-content" label="头像">
-                <div>
-                  <el-upload
-                    class="upload-demo"
-                    ref="upload"
-                    action
-                    :file-list="fileList"
-                    :http-request="handleUpload"
-                    multiple
-                    :on-change="handleImgChange"
-                    list-type="picture"
-                    accept="image/jpeg,image/gif,image/png"
-                  >
-                    <el-button size="small" type="primary">上传</el-button>
-                  </el-upload>
-                </div>
-              </el-form-item>
-            </el-form>
-          </div>
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="状态">
+              <el-select v-model="editFormData.enabled" placeholder="请选择">
+                <el-option :value="true" label="启用"></el-option>
+                <el-option :value="false" label="禁用"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="年龄">
+              <el-input
+                v-model="editFormData.userAge"
+                placeholder="如：18"
+              ></el-input>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item label="手机号">
+              <el-input
+                v-model="editFormData.phone"
+                placeholder="如：152xxxx1414"
+              ></el-input>
+              <span class="important">*</span>
+            </el-form-item>
+
+            <el-form-item label="邮箱">
+              <el-input
+                v-model="editFormData.email"
+                placeholder="如：152xxxx1414@163.com"
+              ></el-input>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item v-show="isEdit" label="创建时间">
+              <el-date-picker
+                v-model="editFormData.createTime"
+                type="datetime"
+                :disabled="true"
+                placeholder="如：2019-01-01 00:01:01"
+              >
+              </el-date-picker>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item class="last-content" label="头像">
+              <div>
+                <el-upload
+                  class="upload-demo"
+                  ref="upload"
+                  action
+                  :file-list="fileList"
+                  :http-request="handleUpload"
+                  multiple
+                  :on-change="handleImgChange"
+                  list-type="picture"
+                  accept="image/jpeg,image/gif,image/png"
+                >
+                  <el-button size="small" type="primary">上传</el-button>
+                </el-upload>
+              </div>
+            </el-form-item>
+          </el-form>
         </div>
       </div>
     </div>
@@ -267,9 +265,9 @@ export default {
     },
     async getDataList () { // 获取表格集合
       this.handleLoading(true)
-      const res = await this.$get('/api/auth/user', this.queryListParam)
+      const res = await this.$get('/api/system/user', this.queryListParam)
       this.handleLoading(false)
-      if (res.status !== 200) return this.$message.error(res.msg)
+      if (res.status !== 200) return
       this.dataList = res.data
       this.total = res.total
     },
@@ -279,8 +277,9 @@ export default {
     },
     async handleIsEdit (id) { // 获取修改的用户数据
       this.handleLoading(true)
-      const res = await this.$get('/api/auth/user/' + id)
+      const res = await this.$get('/api/system/user/' + id)
       this.handleLoading(false)
+      if (res.status !== 200) return
       this.editFormData = res.data
       this.handleFileList(this.editFormData.photo)
       this.isTable = false
@@ -295,14 +294,14 @@ export default {
       form.append('file', content.file)
       form.append('userId', this.editFormData.id)
       this.handleLoading(true)
-      const res = await this.$put('/api/auth/photo/user', form)
+      const res = await this.$put('/api/system/photo/user', form)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
     },
     async handleIsTable () { // 导出excel
       if (this.isTable) {
-        await this.$export('/api/auth/user/export', this.queryListParam).then((res) => {
+        await this.$export('/api/system/user/export', this.queryListParam).then((res) => {
           this.$message.success('下载成功~')
           // eslint-disable-next-line handle-callback-err
         }).catch((err) => {
@@ -320,7 +319,7 @@ export default {
       }
       // 新增用户
       this.handleLoading(true)
-      const res = await this.$post('/api/auth/user', this.editFormData)
+      const res = await this.$post('/api/system/user', this.editFormData)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
@@ -328,7 +327,7 @@ export default {
     },
     async handleEditSave () { // 修改函数
       this.handleLoading(true)
-      const res = await this.$put('/api/auth/user', this.editFormData)
+      const res = await this.$put('/api/system/user', this.editFormData)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
@@ -345,13 +344,13 @@ export default {
     },
     async enterDel (id) { // 删除用户
       this.handleLoading(true)
-      const res = await this.$delete('/api/auth/user/' + id)
+      const res = await this.$delete('/api/system/user/' + id)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
     },
     async handleRoleList () { // 获取角色下拉框集合
-      const res = await this.$get('/api/auth/role')
+      const res = await this.$get('/api/system/role')
       this.roleList = res.data
     }
   }

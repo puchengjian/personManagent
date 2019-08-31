@@ -2,7 +2,6 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import router from '../router'
-import {get } from './api'
 
 const baseURL = ''
 axios.defaults.timeout = 10000 // 响应时间10s  提示用户超时请刷新
@@ -25,7 +24,6 @@ axios.interceptors.response.use(data => {
       sessionStorage.removeItem('token')
       setTimeout(() => {
         router.push('/login')
-        get('/api/logout')
       }, 3000)
       return data
     }
@@ -39,9 +37,10 @@ axios.interceptors.response.use(data => {
         Message.error({ message: data.data.msg })
         return data
       }
-      // 客户端请求语法错误，服务端无法理解
+      // 客户端请求语法错误，服务端无法理解y
+
       if (data.status === 200 && data.data.status === 400) {
-        Message.error({ message: data.data.msg })
+        Message.warning({ message: data.data.msg })
         return data
       }
       if (data.data.msg) {
@@ -56,7 +55,6 @@ axios.interceptors.response.use(data => {
     sessionStorage.removeItem('token')
     setTimeout(() => {
       router.push('/login')
-      get('/api/logout')
     }, 3000)
     return false
   } else if (err.response.status !== 200) {

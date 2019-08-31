@@ -55,29 +55,29 @@
           >
             <el-table-column prop="text" label="菜单名称" width="140">
             </el-table-column>
-            <el-table-column prop="path" label="路径" width="120">
+            <el-table-column prop="path" label="路径" width="140">
             </el-table-column>
-            <el-table-column prop="component" label="组件" width="120">
+            <el-table-column prop="component" label="组件" width="140">
             </el-table-column>
-            <el-table-column prop="folder" label="文件夹" width="120">
+            <el-table-column prop="folder" label="文件夹" width="140">
             </el-table-column>
-            <el-table-column prop="icon" label="图标" width="180">
+            <el-table-column prop="icon" label="图标" width="200">
             </el-table-column>
-            <el-table-column prop="type" label="类型" width="80">
+            <el-table-column prop="type" label="类型" width="120">
             </el-table-column>
-            <el-table-column prop="perms" label="权限" width="100">
+            <el-table-column prop="perms" label="权限" width="140">
             </el-table-column>
-            <el-table-column label="状态" width="80">
+            <el-table-column label="状态" width="140">
               <template slot-scope="scope">
                 <span>{{ scope.row.enabled }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="需要登录" width="100">
+            <el-table-column label="需要登录" width="140">
               <template slot-scope="scope">
                 <span>{{ scope.row.meta.requireAuth }}</span>
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="250">
+            <el-table-column fixed="right" label="操作" min-width="250">
               <template slot-scope="scope">
                 <el-button
                   type="primary"
@@ -114,85 +114,83 @@
         </div>
 
         <div class="add-content" v-show="!isTable">
-          <div class="formbox">
-            <el-form
-              label-position="right"
-              label-width="140px"
-              :model="editFormData"
+          <el-form
+            label-position="right"
+            label-width="140px"
+            :model="editFormData"
+          >
+            <el-form-item label="菜单名称">
+              <el-input v-model="editFormData.menuName"></el-input>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item
+              label="权限"
+              v-show="editFormData.type === 1 ? false : true"
             >
-              <el-form-item label="菜单名称">
-                <el-input v-model="editFormData.menuName"></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item
-                label="权限"
-                v-show="editFormData.type === 1 ? false : true"
+              <el-input v-model="editFormData.perms"></el-input>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item
+              v-show="editFormData.type === 2 ? false : true"
+              label="组件"
+            >
+              <el-input
+                :disabled="isEdit"
+                v-model="editFormData.component"
+              ></el-input>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item
+              v-show="editFormData.type === 2 ? false : true"
+              label="文件夹"
+            >
+              <el-input
+                :disabled="isEdit"
+                v-model="editFormData.folder"
+              ></el-input>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item
+              label="图标"
+              v-show="editFormData.type === 2 ? false : true"
+            >
+              <el-input v-model="editFormData.icon"></el-input>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item
+              label="路径"
+              v-show="editFormData.type === 2 ? false : true"
+            >
+              <el-input v-model="editFormData.path"></el-input>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item label="是否需要登录">
+              <el-select
+                v-model="editFormData.requireAuth"
+                placeholder="请选择"
               >
-                <el-input v-model="editFormData.perms"></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item
-                v-show="editFormData.type === 2 ? false : true"
-                label="组件"
+                <el-option :value="true" label="true"></el-option>
+                <el-option :value="false" label="false"></el-option>
+              </el-select>
+              <span class="important">*</span>
+            </el-form-item>
+            <el-form-item label="类型">
+              <el-radio-group :disabled="isEdit" v-model="editFormData.type">
+                <el-radio :label="1">菜单</el-radio>
+                <el-radio :label="2">按钮</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item v-show="isEdit" label="创建时间">
+              <el-date-picker
+                v-model="editFormData.createTime"
+                type="datetime"
+                :disabled="true"
+                placeholder="如：2019-01-01 00:01:01"
               >
-                <el-input
-                  :disabled="isEdit"
-                  v-model="editFormData.component"
-                ></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item
-                v-show="editFormData.type === 2 ? false : true"
-                label="文件夹"
-              >
-                <el-input
-                  :disabled="isEdit"
-                  v-model="editFormData.folder"
-                ></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item
-                label="图标"
-                v-show="editFormData.type === 2 ? false : true"
-              >
-                <el-input v-model="editFormData.icon"></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item
-                label="路径"
-                v-show="editFormData.type === 2 ? false : true"
-              >
-                <el-input v-model="editFormData.path"></el-input>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item label="是否需要登录">
-                <el-select
-                  v-model="editFormData.requireAuth"
-                  placeholder="请选择"
-                >
-                  <el-option :value="true" label="true"></el-option>
-                  <el-option :value="false" label="false"></el-option>
-                </el-select>
-                <span class="important">*</span>
-              </el-form-item>
-              <el-form-item label="类型">
-                <el-radio-group :disabled="isEdit" v-model="editFormData.type">
-                  <el-radio :label="1">菜单</el-radio>
-                  <el-radio :label="2">按钮</el-radio>
-                </el-radio-group>
-              </el-form-item>
-              <el-form-item v-show="isEdit" label="创建时间">
-                <el-date-picker
-                  v-model="editFormData.createTime"
-                  type="datetime"
-                  :disabled="true"
-                  placeholder="如：2019-01-01 00:01:01"
-                >
-                </el-date-picker>
-                <span class="important">*</span>
-              </el-form-item>
-            </el-form>
-          </div>
+              </el-date-picker>
+              <span class="important">*</span>
+            </el-form-item>
+          </el-form>
         </div>
       </div>
     </div>
@@ -247,15 +245,17 @@ export default {
     },
     async getDataList () { // 获取表格集合
       this.handleLoading(true)
-      const res = await this.$get('/api/auth/menu', this.queryListParam)
+      const res = await this.$get('/api/system/menu', this.queryListParam)
       this.handleLoading(false)
+      if (res.status !== 200) return
       this.dataList = res.data
       this.total = res.total
     },
     async handleIsEdit (id) { // 获取修改的菜单数据
       this.handleLoading(true)
-      const res = await this.$get('/api/auth/menu/' + id)
+      const res = await this.$get('/api/system/menu/' + id)
       this.handleLoading(false)
+      if (res.status !== 200) return
       this.editFormData = res.data
       this.isTable = false
       this.isEdit = true
@@ -273,7 +273,7 @@ export default {
       }
       // 新增菜单
       this.handleLoading(true)
-      const res = await this.$post('/api/auth/menu', this.editFormData)
+      const res = await this.$post('/api/system/menu', this.editFormData)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
@@ -281,7 +281,7 @@ export default {
     },
     async handleEditSave () { // 修改函数
       this.handleLoading(true)
-      const res = await this.$put('/api/auth/menu', this.editFormData)
+      const res = await this.$put('/api/system/menu', this.editFormData)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
@@ -298,7 +298,7 @@ export default {
     },
     async enterDel (id) { // 删除菜单
       this.handleLoading(true)
-      const res = await this.$delete('/api/auth/menu/' + id)
+      const res = await this.$delete('/api/system/menu/' + id)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()

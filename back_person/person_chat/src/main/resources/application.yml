@@ -1,0 +1,6 @@
+server:
+  port: 9292
+
+spring:
+  profiles:
+    active: jdbc, redis, conf, dev, ftp

@@ -34,7 +34,7 @@ public class ShiroLoginFilter extends FormAuthenticationFilter {
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         if (request instanceof HttpServletRequest) {
             HttpServletRequest httpServletRequest = ((HttpServletRequest) request);
-//            log.error("方法:{}", httpServletRequest.getRequestURI());
+            log.error("方法:{}", httpServletRequest.getRequestURI());
             if (httpServletRequest.getMethod().toUpperCase().equals("OPTIONS")) {
                 return true;
             }
