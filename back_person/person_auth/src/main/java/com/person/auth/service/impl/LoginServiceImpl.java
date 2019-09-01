@@ -22,7 +22,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public UserVO login(String account) {
-        return null;
+        return loginMapper.login(account);
     }
 
     @Override

@@ -11,7 +11,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableSwagger2
 @ComponentScan("com.person")
-@MapperScan("com.person")
+@MapperScan({"com.person.chat.dao", "com.person.auth.dao"})
 public class ChatApplication extends SpringBootServletInitializer {
 
     @Override

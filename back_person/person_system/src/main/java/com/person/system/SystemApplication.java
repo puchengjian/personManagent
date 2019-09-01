@@ -14,8 +14,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @SpringBootApplication
 @EnableSwagger2
-@ComponentScan(value = {"com.person", "com.person.auth"})
-@MapperScan({"com.person", "com.person.auth"})
+@ComponentScan(value = {"com.person"})
+@MapperScan({"com.person.system.dao", "com.person.auth.dao"})
 public class SystemApplication extends SpringBootServletInitializer {
 
     @Override
