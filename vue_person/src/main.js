@@ -36,11 +36,10 @@ router.beforeEach((to, from, next) => {
     return next('/login')
   }
 
-  initMenu(router, store)
-  if (to.path === '/') {
-    next('/index')
-  }
   next()
+  initMenu(router, store)
+  store.commit('updateMsgList', [])
+  store.commit('updateFriend', {})
 })
 
 /* eslint-disable no-new */

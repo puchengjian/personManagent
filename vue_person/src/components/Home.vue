@@ -93,7 +93,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          _this.$get('/logout')
+          _this.$get('/api/auth/logout')
           _this.$store.commit('logout')
           _this.$router.replace({ path: '/login' })
         }).catch(() => {

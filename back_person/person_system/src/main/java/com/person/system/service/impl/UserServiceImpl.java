@@ -1,5 +1,8 @@
 package com.person.system.service.impl;
 
+import com.person.auth.dao.BaseMapper;
+import com.person.auth.pojo.entity.UserFriend;
+import com.person.auth.service.BaseService;
 import com.person.system.dao.UserMapper;
 import com.person.system.network.bean.user.InsertUserReq;
 import com.person.system.network.bean.user.ListUserReq;
@@ -24,6 +27,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
+    private BaseService baseService;
+    @Autowired
     private UserMapper userMapper;
     @Autowired
     private UserRoleService userRoleService;
@@ -31,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserVO findUserByAccount(String account) {
-        return userMapper.findUserByAccount(account);
+        return baseService.findUserByAccount(account);
     }
 
     @Override
@@ -46,12 +51,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByPhone(String phone) {
-        return userMapper.findUserByPhone(phone);
+        return baseService.findUserByPhone(phone);
     }
+
 
     @Override
     public UserVO findUserById(String id) {
-        return userMapper.findUserById(id);
+        return baseService.findUserById(id);
     }
 
     @Override
@@ -92,6 +98,11 @@ public class UserServiceImpl implements UserService {
     public boolean deleteUserById(String id) {
         if (userMapper.deleteUserById(id) > 0) {
             userRoleService.deleteUserRoleByUserId(id);
+            List<UserFriend> userFriends = baseService.listUserFriend(id);
+            for (UserFriend userFriend : userFriends) {
+                baseService.deleteFriend(id, userFriend.getFriendUserId());
+            }
+
             return true;
         }
 

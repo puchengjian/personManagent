@@ -14,7 +14,7 @@ Configuration:
         value: /home/logs/person
 #        value: ./logs/person
       - name: project.name
-        value: person_auth
+        value: person_system
       - name: log.pattern #ISO8601格式
         value: "[%d{yyyy-MM-dd HH:mm:ss,SSS}] [%4p] (%C:%L) %m%n"
 

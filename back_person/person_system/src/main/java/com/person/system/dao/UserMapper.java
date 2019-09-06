@@ -17,15 +17,9 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    UserVO findUserByAccount(@Param("account") String account);
-
     List<UserVO> listUser(ListUserReq req);
 
     Integer countUser(ListUserReq req);
-
-    User findUserByPhone(@Param("phone") String phone);
-
-    UserVO findUserById(@Param("id") String id);
 
     Integer insertUser(InsertUserReq userReq);
 

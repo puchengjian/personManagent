@@ -12,7 +12,7 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/api/system': {
-                target: 'http://127.0.0.1:9292',
+                target: 'http://127.0.0.1:9191',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': '/api/person/v1'
@@ -25,11 +25,15 @@ module.exports = {
                     '^/api': '/api/person/v1'
                 }
             },
-            '/': {
-                target: 'http://127.0.0.1:9191',
+            '/ws/*': {
+                target: 'ws://127.0.0.1:9292',
+                ws: true
+            },
+            '/api/auth': {
+                target: 'http://127.0.0.1:9292',
                 changeOrigin: true,
                 pathRewrite: {
-                    '^/': ''
+                    '^/api': '/api/auth'
                 }
             }
         },

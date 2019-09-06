@@ -50,17 +50,20 @@ export default {
       loading: false
     }
   },
+  created () {
+    this.$store.commit('logout')
+  },
   methods: {
     login: function () {
       this.loading = true
       var _this = this
-      _this.$post('/login', this.loginForm)
+      _this.$post('/api/auth/login', this.loginForm)
         .then(resp => {
           if (resp.status === 200) {
             sessionStorage.setItem('token', resp.token)
             this.setCookie()
             _this.$store.commit('login', resp.data)
-            _this.$router.replace({ path: '/index' })
+            _this.$router.replace({ path: '/' })
           }
         })
       _this.loading = false

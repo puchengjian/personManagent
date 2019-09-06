@@ -8,6 +8,7 @@
 export default {
   name: 'App'
 }
+
 </script>
 
 <style lang="stylus">
@@ -17,5 +18,6 @@ export default {
   cursor: default;
   letter-spacing: 1px;
   user-select: none;
+  text-align: center;
 }
 </style>

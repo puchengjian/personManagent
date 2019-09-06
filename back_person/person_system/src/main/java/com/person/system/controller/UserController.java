@@ -1,5 +1,6 @@
 package com.person.system.controller;
 
+import com.person.auth.service.BaseService;
 import com.person.system.network.bean.user.InsertUserReq;
 import com.person.system.network.bean.user.ListUserReq;
 import com.person.system.network.bean.user.UpdateUserReq;

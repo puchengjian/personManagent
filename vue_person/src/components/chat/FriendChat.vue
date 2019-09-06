@@ -2,55 +2,65 @@
   <div class="mainer">
     <el-container>
       <el-aside width="160px" style="background-color: rgb(240, 248, 248)">
-        <!-- @click="toggleFriend(hr)"  -->
         <div
-          v-for="user in dataList"
-          :key="user.id"
+          v-for="friend in friendList"
+          :key="friend.id"
           class="friendListDiv"
-          v-bind:class="{ currentChatFriend: false }"
+          @click="toggleFriend(friend)"
+          v-bind:class="{
+            currentChatFriend: friend.id == currentFriend.id
+          }"
         >
-          <img :src="user.photo" class="userfaceImg" />
-          <el-badge is-dot="true">{{ user.userName }}</el-badge>
+          <img :src="friend.photo" class="userfaceImg" />
+          <el-badge :is-dot="!friend.read">{{ friend.userName }}</el-badge>
         </div>
         <div style="background-color: #20a0ff;height: 1px;width: 160px;" />
       </el-aside>
       <el-main style="padding-top: 0px;padding-bottom: 0px">
         <div class="chatDiv" ref="chatDiv" id="chatDiv">
-          <p v-show="currentFriend.name">
+          <p v-show="currentFriend.userName">
             与
             <el-tag
               type="primary"
               size="small"
               style="margin-left: 5px;margin-right: 5px"
-              >{{ currentFriend.name }}
+              >{{ currentFriend.userName }}
             </el-tag>
             聊天中
           </p>
-          <template v-for="msg in msgList">
+          <template v-for="(msg, index) in msgList">
             <!--发送来的消息-->
             <div
-              :key="msg"
-              style="display: flex;justify-content: flex-start;align-items: center;box-sizing: border-box;"
-              v-if="msg.from == currentFriend.username"
-            ></div>
+              :key="index"
+              style="display: flex;justify-content: flex-start;align-items: center;box-sizing: border-box; margin-top: 6px;"
+              v-if="msg.myUserId == currentFriend.id"
+            >
+              <img :src="currentFriend.photo" class="userfaceImg" />
+              <div
+                style="display: inline-flex;border-style: solid;border-width: 1px;border-color: #20a0ff;border-radius: 5px;padding: 5px 8px 5px 8px"
+              >
+                {{ msg.msg }}
+              </div>
+            </div>
             <!--发出去的消息-->
             <div
-              :key="msg"
-              v-if="msg.from != currentFriend.username"
-              style="display: flex;justify-content: flex-end;align-items: center;box-sizing: border-box;"
+              :key="index"
+              v-if="msg.myUserId != currentFriend.id"
+              style="display: flex;justify-content: flex-end;align-items: center;box-sizing: border-box; margin-top: 6px;"
             >
               <div
                 style="display: inline-flex;border-style: solid;border-width: 1px;border-color: #20a0ff;border-radius: 5px;padding: 5px 8px 5px 8px;margin-right: 3px;background-color: #9eea6a"
               >
                 {{ msg.msg }}
               </div>
-              <img :src="currentUser.userface" class="userfaceImg" />
+              <img :src="currentUser.photo" class="userfaceImg" />
             </div>
           </template>
         </div>
+
         <div style="text-align: left;margin-top: 10px">
           <el-input
-            v-model="msg"
+            v-model="chatFormat.msg"
             placeholder="请输入内容"
             size="mini"
             style="width: 600px;"
@@ -74,78 +84,73 @@
 export default {
   data () {
     return {
-      dataList: [],
-      msg: '',
       currentUser: this.$store.state.user,
-      currentFriend: {}
+      chatFormat: {
+        myUserId: this.$store.state.user.id,
+        friendUserId: '',
+        msg: ''
+      }
     }
   },
   created () {
     this.getDataList()
-    this.initEditFormData()
+  },
+  computed: { // 数据没有变化，不会调用，返回之前的数据，性能更好
+    msgList: {
+      get: function () {
+        return this.$store.state.msgList
+      }
+    },
+    friendList: {
+      get: function () {
+        return this.$store.state.friendList
+      }
+    },
+    currentFriend: {
+      get: function () {
+        return this.$store.state.currentFriend
+      }
+    }
+  },
+  watch: { // 监听，异步操作
+    msgList () {
+      document.getElementById('chatDiv').scrollTop = document.getElementById('chatDiv').scrollHeight
+    }
   },
   methods: {
     handleLoading (val) { // loading
       this.loading = val
     },
-    handleSearch () {
-      this.page = 1
-      this.size = 10
-      this.getDataList()
+    async toggleFriend (friend) {
+      // 切换数据
+      if (friend === this.currentFriend) {
+        return
+      }
+      this.$store.commit('updateFriend', friend)
+      this.chatFormat.friendUserId = friend.id
+      this.handleMsgList(friend.id)
+      this.handleEditRead()
+      // console.log(res)
     },
-    async getDataList () {
+    async handleMsgList (friendUserId) { // 获取聊天消息
+      await this.$get('/api/chat/friend/msg', { friendUserId: friendUserId }).then((res) => {
+        this.$store.commit('updateMsgList', res.data)
+      })
+      document.getElementById('chatDiv').scrollTop = document.getElementById('chatDiv').scrollHeight
+    },
+    async getDataList () { // 获取好友列表
       this.handleLoading(true)
       const res = await this.$get('/api/chat/friend')
       this.handleLoading(false)
-      this.dataList = res.data
-      // this.total = res.total
+      this.$store.commit('updateFriendList', res.data)
     },
-    initEditFormData () {
-      this.editFormData = {
-        friendUserId: '',
-        userName: '',
-        phone: '',
-        photo: ''
-      }
+    sendMsg () { // 发送消息
+      this.$store.state.stomp.send('/ws/chat', {}, JSON.stringify(this.chatFormat))
+      this.chatFormat.msg = ''
+      this.handleEditRead()
     },
-    async handleSearchFriend () {
-      this.handleLoading(true)
-      const res = await this.$get('/api/auth/friend/' + this.editFormData.phone)
-      this.handleLoading(false)
-      if (res.status !== 200) return
-      this.editFormData = res.data
-      this.editFormData.friendUserId = res.data.id
-      this.isTable = false
-      this.isEdit = true
-    },
-    async handleIsTable () {
-      this.initEditFormData()
-      this.isTable = !this.isTable
-      this.isEdit = false
-    },
-    async handleSave () {
-      this.handleLoading(true)
-      const res = await this.$post('/api/auth/friend', this.editFormData)
-      this.handleLoading(false)
-      if (res.status !== 200) return
-      this.getDataList()
-      this.isTable = true
-    },
-    handleDel (id) {
-      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.enterDel(id)
-      }).catch(() => { })
-    },
-    async enterDel (id) {
-      this.handleLoading(true)
-      const res = await this.$delete('/api/auth/friend/' + id)
-      this.handleLoading(false)
-      if (res.status !== 200) return
-      this.getDataList()
+    async handleEditRead () { // 修改信息阅读状态
+      await this.$put('/api/chat/friend', this.chatFormat)
     }
   }
 }
@@ -156,6 +161,7 @@ export default {
   height: 37px;
   border-radius: 30px;
   margin-right: 10px;
+  margin-left: 5px;
 }
 
 .friendListDiv {

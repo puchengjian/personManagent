@@ -30,8 +30,11 @@ public class ShiroSessionManager extends DefaultWebSessionManager {
         if (servletRequest.getRequestURI().equals("/favicon.ico")) {
             return null;
         }
-
         String token = WebUtils.toHttp(request).getHeader(HEADER_TOKEN_NAME);
+        if (servletRequest.getRequestURI().startsWith("/chat/ws") && StringUtils.isEmpty(token)) {
+            token = request.getParameter("token");
+            log.warn("ws token：{}", token );
+        }
         if (StringUtils.isEmpty(token)) {
             //如果没有携带id参数则按照父类的方式在cookie进行获取
             return super.getSessionId(request, response);

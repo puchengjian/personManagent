@@ -3,7 +3,6 @@ package com.person.auth.controller;
 import com.person.auth.network.bean.LoginReq;
 import com.person.constant.HttpConst;
 import com.person.json.SuccessOrFailure;
-import com.person.redis.RedisService;
 import com.person.auth.shiro.ShiroService;
 import com.person.utils.MD5Utils;
 import io.swagger.annotations.Api;
@@ -23,10 +22,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api(description = "登录管理")
 @Slf4j
+@RequestMapping("/api/auth")
 public class LoginController {
-
-    @Autowired
-    private ShiroService shiroService;
 
     @PostMapping("/login")
     @ApiOperation("请求登录")
@@ -41,14 +38,14 @@ public class LoginController {
             return SuccessOrFailure.FAILURE(HttpConst.FORBIDDEN, e.getMessage());
         }
 
-        return SuccessOrFailure.SUCCESS(shiroService.getUser(), shiroService.getSession().getId());
+        return SuccessOrFailure.SUCCESS(ShiroService.getUser(), ShiroService.getSession().getId());
     }
 
 
     @GetMapping("/logout")
     @ApiOperation("退出")
     public void logout() {
-        shiroService.logout();
+        ShiroService.logout();
     }
 
 

@@ -1,4 +1,4 @@
-package com.person.system.pojo.vo;
+package com.person.chat.pojo.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

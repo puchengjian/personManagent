@@ -18,11 +18,12 @@ export const initMenu = (router, store) => {
   if (store.state.routes.length > 0) {
     return
   }
-  get('/api/auth/nav/menu').then(resp => {
+  get('/api/system/nav/menu').then(resp => {
     if (resp.status === 200) {
       let fmtRoutes = formatRoutes(resp.data)
       router.addRoutes(fmtRoutes)
       store.commit('initMenu', fmtRoutes)
+      store.dispatch('connect')
     }
   })
 }

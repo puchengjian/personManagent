@@ -1,5 +1,6 @@
 package com.person.auth.shiro;
 
+import com.person.constant.RedisConst;
 import com.person.redis.RedisCacheManager;
 import com.person.shiro.ShiroSessionManager;
 import com.person.shiro.ShiroLoginFilter;
@@ -145,7 +146,7 @@ public class ShiroConfig {
         AuthRealm authRealm = new AuthRealm();
         authRealm.setCachingEnabled(true);
         authRealm.setAuthorizationCachingEnabled(true);
-        authRealm.setAuthorizationCacheName("authorizationCache");
+        authRealm.setAuthorizationCacheName(RedisConst.SHIRO_CACHE_NAME);
 
         return authRealm;
     }

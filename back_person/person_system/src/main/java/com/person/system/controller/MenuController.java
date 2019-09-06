@@ -30,14 +30,12 @@ public class MenuController {
 
     @Autowired
     private MenuService menuService;
-    @Autowired
-    private ShiroService shiroService;
 
     @GetMapping("/nav/menu")
     @ApiOperation(value = "查询导航菜单", response = Tree.class)
     SuccessOrFailure listNavMenu() {
         try {
-            List<Tree<Menu>> menuList = menuService.listNavMenu(shiroService.getId());
+            List<Tree<Menu>> menuList = menuService.listNavMenu(ShiroService.getId());
 
             return SuccessOrFailure.SUCCESS(menuList);
         } catch (Exception e) {
@@ -50,7 +48,7 @@ public class MenuController {
     @ApiOperation(value = "查询全部菜单", response = Tree.class)
     SuccessOrFailure listMenu(@Valid ListMenuReq req) {
         try {
-            req.setUserId(shiroService.getId());
+            req.setUserId(ShiroService.getId());
             List<Tree<Menu>> menuList = menuService.listMenu(req);
             Integer count = menuService.countMenu(req);
 

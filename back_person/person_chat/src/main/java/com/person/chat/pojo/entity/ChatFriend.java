@@ -33,6 +33,15 @@ public class ChatFriend {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
+
+    public ChatFriend(){}
+
+    public ChatFriend(String friendUserId, String myUserId, String msg) {
+        this.friendUserId = friendUserId;
+        this.myUserId = myUserId;
+        this.msg = msg;
+    }
+
     @Override
     public String toString() {
 

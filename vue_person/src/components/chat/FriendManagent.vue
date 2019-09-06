@@ -131,8 +131,7 @@ export default {
         searchValue: '',
         page: 1,
         size: 10
-      },
-      authTreeList: [] // 权限树形结构数据
+      }
     }
   },
   created () {
@@ -150,7 +149,7 @@ export default {
     },
     async getDataList () {
       this.handleLoading(true)
-      const res = await this.$get('/api/auth/friend', this.queryListParam)
+      const res = await this.$get('/api/chat/user/friend', this.queryListParam)
       this.handleLoading(false)
       this.dataList = res.data
       this.total = res.total
@@ -165,7 +164,7 @@ export default {
     },
     async handleSearchFriend () {
       this.handleLoading(true)
-      const res = await this.$get('/api/auth/friend/' + this.editFormData.phone)
+      const res = await this.$get('/api/chat/user/friend/' + this.editFormData.phone)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.editFormData = res.data
@@ -180,7 +179,7 @@ export default {
     },
     async handleSave () {
       this.handleLoading(true)
-      const res = await this.$post('/api/auth/friend', this.editFormData)
+      const res = await this.$post('/api/chat/user/friend', this.editFormData)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()
@@ -197,7 +196,7 @@ export default {
     },
     async enterDel (id) {
       this.handleLoading(true)
-      const res = await this.$delete('/api/auth/friend/' + id)
+      const res = await this.$delete('/api/chat/user/friend/' + id)
       this.handleLoading(false)
       if (res.status !== 200) return
       this.getDataList()

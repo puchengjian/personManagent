@@ -2,7 +2,8 @@ package com.person.auth.shiro;
 
 import com.person.auth.pojo.entity.User;
 import com.person.auth.pojo.vo.UserVO;
-import com.person.auth.service.LoginService;
+import com.person.auth.service.BaseService;
+import com.person.redis.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -11,7 +12,6 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
 
@@ -23,17 +23,17 @@ import java.util.List;
 public class AuthRealm extends AuthorizingRealm {
 
     @Autowired
-    private LoginService loginService;
+    private BaseService baseService;
     @Autowired
-    private ShiroService shiroService;
+    private RedisService redisService;
 
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         log.warn("进入角色授权！");
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        User user = shiroService.getUser();
-        List<String> perms = loginService.listMenuPerms(user.getId());
+        User user = ShiroService.getUser();
+        List<String> perms = baseService.listMenuPerms(user.getId());
         simpleAuthorizationInfo.setStringPermissions(new HashSet<>(perms));
 
         return simpleAuthorizationInfo;
@@ -45,7 +45,7 @@ public class AuthRealm extends AuthorizingRealm {
         String account = (String) token.getPrincipal();
         String password = new String((char[]) token.getCredentials());
 
-        UserVO user = loginService.login(account);
+        UserVO user = baseService.findUserByAccount(account);
         if (user == null) {
             throw  new UnknownAccountException("账号不正确~");
         }
@@ -57,7 +57,7 @@ public class AuthRealm extends AuthorizingRealm {
         if (!password.equals(user.getPassword())) {
             throw new IncorrectCredentialsException("密码不正确~");
         }
-
+        redisService.set("user", user);
         return new SimpleAuthenticationInfo(user, password, getName());
     }
 }

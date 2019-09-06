@@ -14,7 +14,8 @@ public class RedisConst {
     /**
      * shiro 权限 key
      */
-    public static final String SHIRO_CACHE_KEY = "shiro:cache:";
+    public static final String SHIRO_CACHE_KEYPREFIX = "shiro:cache:";
+    public static final String SHIRO_CACHE_NAME = "authorizationCache:";
 
 
 }

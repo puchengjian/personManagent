@@ -21,8 +21,9 @@ public class ChatFriendVO {
     @ApiModelProperty("头像")
     private String photo;
 
-    @ApiModelProperty("是否有未读消息")
+    @ApiModelProperty("是否已读消息")
     private boolean read;
+
 
     @Override
     public String toString() {

@@ -1,5 +1,7 @@
 package com.person.system.service.impl;
 
+import com.person.constant.RedisConst;
+import com.person.redis.RedisService;
 import com.person.system.dao.MenuMapper;
 import com.person.system.dao.RoleMapper;
 import com.person.system.network.bean.menu.InsertMenuReq;
@@ -33,7 +35,8 @@ public class MenuServiceImpl implements MenuService {
     @Autowired
     private RoleMenuService roleMenuService;
     @Autowired
-    private ShiroService shiroService;
+    private RedisService redisService;
+
 
     @Override
     public List<Tree<Menu>> listNavMenu(String id) {
@@ -65,11 +68,13 @@ public class MenuServiceImpl implements MenuService {
     @Override
     @Transactional
     public boolean insertMenu(InsertMenuReq req) {
-        Role role = roleMapper.findRoleByUserId(shiroService.getId());
+        Role role = roleMapper.findRoleByUserId(ShiroService.getId());
         req.setId(UUIDUtils.getUUID());
         if (menuMapper.insertMenu(req) > 0) {
-            if (role.isAdmin())
+            if (role.isAdmin()) {
                 roleMenuService.insertRoleMenu(role.getId(), req.getId());
+                redisService.remove(RedisConst.SHIRO_CACHE_KEYPREFIX + RedisConst.SHIRO_CACHE_NAME + role.getId());
+            }
 
             return true;
         }

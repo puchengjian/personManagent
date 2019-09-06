@@ -1,4 +1,4 @@
-package com.person.system.pojo.entity;
+package com.person.auth.pojo.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel("好友关联数据")
-public class Friend implements Serializable {
+public class UserFriend implements Serializable {
     private static final long serialVersionUID = 1781896382958637299L;
 
     @ApiModelProperty("主键Id")

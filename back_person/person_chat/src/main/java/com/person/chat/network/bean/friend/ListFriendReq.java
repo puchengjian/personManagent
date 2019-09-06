@@ -1,17 +1,16 @@
-package com.person.system.network.bean.friend;
+package com.person.chat.network.bean.friend;
 
-import com.person.network.bean.BaseReq;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
  * @author: pzy
- * @create: 2019/8/31 13:40
+ * @create: 2019/9/2 10:19
  */
 @Data
 @ApiModel("查询全部好友参数")
-public class ListFriendReq extends BaseReq {
+public class ListFriendReq {
 
     @ApiModelProperty("搜索字段")
     private String searchKey;

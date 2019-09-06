@@ -22,7 +22,7 @@ public class RedisCacheManager implements CacheManager {
 
     private int expire = 1800;
 
-    private String keyPrefix = RedisConst.SHIRO_CACHE_KEY;
+    private String keyPrefix = RedisConst.SHIRO_CACHE_KEYPREFIX;
 
     private String principalIdFieldName = "authCacheKey or id";
 
@@ -34,7 +34,7 @@ public class RedisCacheManager implements CacheManager {
         Cache cache = caches.get(name);
 
         if (cache == null) {
-            cache = new RedisCache<K, V>(redisService, keyPrefix + name + ":", expire, principalIdFieldName);
+            cache = new RedisCache<K, V>(redisService, keyPrefix + name, expire, principalIdFieldName);
             caches.put(name, cache);
         }
 

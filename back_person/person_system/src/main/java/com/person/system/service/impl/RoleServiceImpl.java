@@ -68,7 +68,7 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public boolean updateRoleById(UpdateRoleReq req) {
         if (roleMapper.updateRoleById(req) > 0) {
-            redisService.remove(RedisConst.SHIRO_CACHE_KEY + req.getId());
+            redisService.remove(RedisConst.SHIRO_CACHE_KEYPREFIX + RedisConst.SHIRO_CACHE_NAME + req.getId());
             roleMenuService.deleteByRoleId(req.getId());
             roleMenuService.insertAll(req.getId(), req.getMenuIdList());
             return true;
@@ -81,7 +81,7 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public boolean deleteRoleById(String id) {
         if (roleMapper.deleteRoleById(id) > 0) {
-            redisService.remove(RedisConst.SHIRO_CACHE_KEY + id);
+            redisService.remove(RedisConst.SHIRO_CACHE_KEYPREFIX + RedisConst.SHIRO_CACHE_NAME + id);
             roleMenuService.deleteByRoleId(id);
             return true;
         }

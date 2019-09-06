@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.person.auth.dao.BaseMapper">
+
+    <sql id="userSql">
+        u.id, u.user_name, u.account, u.password, u.user_age, u.phone, u.photo, u.email, u.enabled, u.create_time, u.update_time
+    </sql>
+
+    <select id="findUserByAccount" resultType="userVO">
+        select r.role_name, r.id roleId,
+        <include refid="userSql"/>
+        from sys_user u
+        left join sys_user_role sur on u.id = sur.user_id
+        left join sys_role r on sur.role_id = r.id
+        where account = #{account}
+    </select>
+
+    <select id="findUserByPhone" resultType="user">
+        select
+        <include refid="userSql"/>
+        from sys_user u
+        where phone = #{phone}
+    </select>
+
+    <select id="findUserById" resultType="userVO">
+        select r.id roleId,
+        <include refid="userSql"/>
+        from sys_user u
+        left join sys_user_role sur on u.id = sur.user_id
+        left join sys_role r on sur.role_id = r.id
+        where u.id = #{id}
+    </select>
+
+    <delete id="deleteFriend">
+        delete from chat_user_friend
+        where my_user_id = #{myUserId} and friend_user_id = #{friendUserId}
+    </delete>
+
+
+
+    <delete id="deleteChatFriend">
+        delete from chat_friend
+        where my_user_id = #{myUserId} and friend_user_id = #{friendUserId}
+    </delete>
+
+    <select id="listUserFriend" resultType="userFriend">
+        select * from chat_user_friend
+        where my_user_id = #{myUserId}
+    </select>
+
+    <select id="listMenuPerms" resultType="string">
+        select m.perms
+        from sys_menu m
+        inner join sys_role_menu rm on m.id = rm.menu_id
+        inner join sys_role r on rm.role_id = r.id
+        inner join sys_user_role ur on r.id = ur.role_id and ur.user_id = #{id}
+        where m.type = 2
+    </select>
+
+
+
+</mapper>

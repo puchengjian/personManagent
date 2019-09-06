@@ -35,22 +35,6 @@
         </if>
     </select>
 
-    <select id="findUserByPhone" resultType="user">
-        select
-        <include refid="userSql"/>
-        from sys_user u
-        where phone = #{phone}
-    </select>
-
-    <select id="findUserById" resultType="userVO">
-        select r.id roleId,
-        <include refid="userSql"/>
-        from sys_user u
-        left join sys_user_role sur on u.id = sur.user_id
-        left join sys_role r on sur.role_id = r.id
-        where u.id = #{id}
-    </select>
-
     <insert id="insertUser" parameterType="user">
         insert into sys_user (id, user_name, account, password, user_age, phone, photo, email, create_time, update_time)
         values (#{id}, #{userName} , #{account}, #{password}, #{userAge}, #{phone}, #{photo}, #{email}, now(), now() );
