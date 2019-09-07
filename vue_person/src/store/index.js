@@ -16,7 +16,8 @@ export default new Vuex.Store({
     routes: [],
     stomp: null,
     msgList: [],
-    friendList: []
+    friendList: [],
+    nfDot: false
   },
   mutations: {
     initMenu (state, menus) {

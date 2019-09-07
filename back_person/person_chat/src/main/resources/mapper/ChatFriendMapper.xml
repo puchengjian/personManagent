@@ -3,8 +3,8 @@
 <mapper namespace="com.person.chat.dao.ChatFriendMapper">
 
     <select id="listChatFriendByUserId" resultType="chatFriendVO">
-       SELECT u.id,u.user_name, u.photo,
-	    if (count( if ( cf.is_read = 0, false, NULL ) ) = 0, true, false) 'read'
+        SELECT u.id,u.user_name, u.photo,
+	    if (count( if ( cf.is_read = 0, false, NULL ) ) = 0, true, false) `read`
         FROM chat_user_friend uf
 	    INNER JOIN sys_user u ON uf.friend_user_id = u.id
 	    LEFT JOIN chat_friend cf ON uf.friend_user_id = cf.my_user_id

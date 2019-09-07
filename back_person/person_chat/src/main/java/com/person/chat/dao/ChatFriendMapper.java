@@ -19,6 +19,8 @@ public interface ChatFriendMapper {
 
     List<ChatFriendVO> listChatFriendByFriendUserId(@Param("friendUserId") String friendUserId);
 
+    boolean findReadByFriendUserId(@Param("userId") String userId);
+
     ChatFriendVO findChatFriend(@Param("myUserId") String myUserId, @Param("friendUserId") String friendUserId);
 
     List<ChatFriend> listChatFriendMsg(@Param("myUserId") String myUserId, @Param("friendUserId") String friendUserId);

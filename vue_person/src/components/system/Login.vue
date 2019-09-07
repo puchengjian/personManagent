@@ -43,8 +43,8 @@ export default {
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
       },
       loginForm: {
-        account: 'pzy',
-        password: '123456'
+        account: '',
+        password: ''
       },
       checked: true,
       loading: false
