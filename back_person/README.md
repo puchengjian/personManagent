@@ -13,7 +13,7 @@ Linux环境
   
     3.4 systemctl start tomcat 启动tomcat
         
-### 配置主从复制
+### 4. 配置主从复制
 4.1 vim /etc/my.conf 配置主从环境，看个人需要
 
     4.1.1 主数据库 my.conf (master)
@@ -68,7 +68,7 @@ Linux环境
     4.4.2 drop table test;
             删除test表，主从数据库test表如果都删除了，测试成功
             
-### 配置Mycat实现读写分离 (我没有使用分库分表)
+### 5. 配置Mycat实现读写分离 (我没有使用分库分表)
 
 5.1 `只读写分离，只需要配置server.xml的用户名、密码、逻辑数据库名，schema.xml的schema标签、dataNode标签、dataHost标签、heartbeat标签、writeHost和readHost标签`
         
@@ -154,7 +154,7 @@ Linux环境
         user属性 数据库连接用户名    
         password属性 数据库连接密码
         
-### Nginx配置负载均衡
+### 6. Nginx配置负载均衡
 
         6.1 配置upstream docker_centos {
             server ip地址:port ; 集群服务器ip和项目端口号 (tomcat端口)
@@ -187,7 +187,7 @@ Linux环境
             }
         }
         
-### vsftp linux搭建挺简单的，自己百度一个教程，注意几个地方就行了
+### 7. vsftp linux搭建挺简单的，自己百度一个教程，注意几个地方就行了
 
         7.1 vim /etc/vsftpd/vsfptd.conf 没有的话使用: find / -name 'vsftp*'查找
         
