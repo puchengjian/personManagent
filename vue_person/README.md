@@ -1,30 +1,7 @@
-# vue_person
-
-> A Vue.js project
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+vue运行步骤
+=
+所需环境：node.js，npm，webpack，vue，vue-cli
+-
+1. 下载代码 vscode打开 npm install 下载依赖
+2. 后端项目启动
+3. 浏览器访问登录
