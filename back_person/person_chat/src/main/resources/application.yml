@@ -3,6 +3,6 @@ server:
 
 spring:
   profiles:
-    active: jdbc, redis, conf, prod, ftp
+    active: jdbc, redis, conf, dev, ftp
   jmx:
     default-domain: chat

@@ -22,7 +22,7 @@ import java.security.Principal;
 public class WsFriendController {
 
     @Autowired
-    private FriendMessageService friendMessageService;
+    private FriendMessageService<ChatFriend> friendMessageService;
     @Autowired
     private ChatFriendService chatFriendService;
     @Autowired

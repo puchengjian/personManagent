@@ -33,7 +33,7 @@ module.exports = {
                 target: 'http://127.0.0.1:9292',
                 changeOrigin: true,
                 pathRewrite: {
-                    '^/api': '/api/auth'
+                    '^/api': '/api'
                 }
             }
         },
