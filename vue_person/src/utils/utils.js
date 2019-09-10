@@ -26,6 +26,9 @@ export const initMenu = (router, store) => {
       store.dispatch('connect')
     }
   })
+  get('/api/friend/read/friend').then(resp => {
+    if (resp.status === 200) store.commit('updateNfDot', resp.data)
+  })
 }
 
 export const formatRoutes = (routes) => {
@@ -50,8 +53,8 @@ export const formatRoutes = (routes) => {
           require(['@/components/' + component + '.vue'], resolve)
         } else if (folder.startsWith('sys')) {
           require(['@/components/system/' + component + '.vue'], resolve)
-        } else if (folder.startsWith('chat')) {
-          require(['@/components/chat/' + component + '.vue'], resolve)
+        } else if (folder.startsWith('friend')) {
+          require(['@/components/friend/' + component + '.vue'], resolve)
         }
       },
       name: text,

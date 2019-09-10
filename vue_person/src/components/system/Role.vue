@@ -101,6 +101,7 @@
             </el-form-item>
             <el-form-item label="角色名称">
               <el-input v-model="editFormData.description"></el-input>
+              <span class="important">*</span>
             </el-form-item>
             <el-form-item class="last-el-form-item" label="权限选择">
               <el-tree

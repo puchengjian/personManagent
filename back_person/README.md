@@ -197,11 +197,19 @@ Linux环境
                 pasv_min_port=30000  最小端口30000
                 pasv_max_port=30999  最大端口30999
             7.2.3 ftpClient.changeWorkingDirectory、makeDirectory、storeFile返回false，可能原因
-                cd /home  切换到ftpuser目录
-                执行 ll命令，查询所属用户是你新建的ftpuser用户吗，有可能是root用户
-                chmod -R 755 /home/ftpuser  分配权限
-                chown -R 用户名 /home/ftpuser 分配所属用户
-                systemctl restart vsftpd
+                7.2.3.1 cd /home  切换到ftpuser目录
+                    执行 ll命令，查询所属用户是你新建的ftpuser用户吗，有可能是root用户
+                    chmod -R 755 /home/ftpuser  分配权限
+                    chown -R 用户名 /home/ftpuser 分配所属用户
+                7.2.3.2
+                    getsebool -a | grep ftp  执行linux命令
+                    ftpd_full_access和tftp_home_dir 如果是off，代表没有开启外网的访问
+                        setsebool -P ftpd_full_access on  执行linux命令
+                        setsebool -P tftp_home_dir on  执行linux命令
+                7.2.3.3 setenforce: SELinux is disabled 解决办法
+                            vim /etc/selinux/config 
+                            更改SELINUX=1 必须重启linux，要不然没办法立刻开启selinux
+                7.2.3.4 systemctl restart vsftpd 重新启动vsftpd服务
                 
         7.3 安全组配置 21端口开放   其他的按网上教程来基本没问题    
                 

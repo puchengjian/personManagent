@@ -50,7 +50,7 @@ public class FtpUtils {
             if (!ftpClient.changeWorkingDirectory(path))
                 ftpClient.makeDirectory(path);
 
-            ftpClient.changeWorkingDirectory(path);
+            log.warn("{}", ftpClient.changeWorkingDirectory(path));
             //被动模式 服务端开端口，客户端连接
             //主动模式 客户端开端口，服务器连接
             //设置被动模式 默认主动模式 客户端不可控，防火墙等原因，需要服务端开启端口
@@ -81,7 +81,8 @@ public class FtpUtils {
 
     /**
      * 删除文件
-     * @param path 路径
+     *
+     * @param path     路径
      * @param fileName 文件名称
      */
     public boolean deleteFile(String path, String fileName) {

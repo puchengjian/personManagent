@@ -10,9 +10,9 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>person_common</module>
-        <module>person_chat</module>
         <module>person_system</module>
         <module>person_auth</module>
+        <module>person_friend</module>
     </modules>
 
     <parent>

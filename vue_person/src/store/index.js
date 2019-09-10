@@ -23,6 +23,9 @@ export default new Vuex.Store({
     initMenu (state, menus) {
       state.routes = menus
     },
+    updateNfDot (state, nfDot) {
+      state.nfDot = nfDot
+    },
     login (state, user) {
       state.user = user
       window.localStorage.setItem('user', JSON.stringify(user))
@@ -53,20 +56,24 @@ export default new Vuex.Store({
     connect (context) {
       context.commit('disconnect')
       console.log('执行连接')
-      const sock = new SockJS('/ws/endpointChat?token=' + sessionStorage.getItem('token'))
+      const sock = new SockJS('/ws/endpoint?token=' + sessionStorage.getItem('token'))
       const state = context.state
       state.stomp = Stomp.over(sock)
       state.stomp.connect({}, frame => {
-        state.stomp.subscribe('/user/queue/chat', message => { // 监听好友聊天消息
+        state.stomp.subscribe('/user/queue/friend/msg', message => { // 监听好友聊天消息
           const msg = JSON.parse(message.body)
           if (msg.friendUserId === state.currentFriend.id || msg.myUserId === state.currentFriend.id) { state.msgList.push(msg) }
         })
-        state.stomp.subscribe('/user/queue/friend', message => { // 监听好友聊天列表
-          state.friendList = JSON.parse(message.body)
+        state.stomp.subscribe('/user/queue/friend/chat/list', message => { // 监听好友聊天列表
+          context.commit('updateFriendList', JSON.parse(message.body))
         })
-        state.stomp.subscribe('/user/queue/chat/read', message => { // 监听发送信息，消息已读状态变化
+        state.stomp.subscribe('/user/queue/friend/msg/read', message => { // 监听发送信息后，消息已读状态
           const chatFormat = JSON.parse(message.body)
-          if (state.currentFriend.id === chatFormat.friendUserId) put('/api/chat/friend', chatFormat)
+          // 当前聊天人等于监听的朋友Id，说明正在聊天，更新阅读状态
+          if (state.currentFriend.id === chatFormat.friendUserId) put('/api/friend/chat/read/friend', chatFormat)
+        })
+        state.stomp.subscribe('/user/queue/read/friend', message => { // 监听消息是否有未读
+          context.commit('updateNfDot', JSON.parse(message.body))
         })
         state.stomp.debug = function () {
 

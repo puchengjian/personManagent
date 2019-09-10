@@ -92,6 +92,7 @@
                 >
                 <el-button
                   @click="handleDel(scope.row.id)"
+                  :disabled="scope.row.admin"
                   type="danger"
                   size="mini"
                   >删除</el-button
@@ -139,7 +140,11 @@
               <span class="important">*</span>
             </el-form-item>
             <el-form-item label="角色">
-              <el-select v-model="editFormData.roleId" placeholder="请选择">
+              <el-select
+                :disabled="editFormData.admin"
+                v-model="editFormData.roleId"
+                placeholder="请选择"
+              >
                 <el-option
                   v-for="role in roleList"
                   :disabled="role.admin"
@@ -149,12 +154,14 @@
                 >
                 </el-option>
               </el-select>
+              <span class="important">*</span>
             </el-form-item>
             <el-form-item label="状态">
               <el-select v-model="editFormData.enabled" placeholder="请选择">
                 <el-option :value="true" label="启用"></el-option>
                 <el-option :value="false" label="禁用"></el-option>
               </el-select>
+              <span class="important">*</span>
             </el-form-item>
             <el-form-item label="年龄">
               <el-input
@@ -188,7 +195,7 @@
               </el-date-picker>
               <span class="important">*</span>
             </el-form-item>
-            <el-form-item class="last-content" label="头像">
+            <el-form-item v-show="isEdit" class="last-content" label="头像">
               <div>
                 <el-upload
                   class="upload-demo"

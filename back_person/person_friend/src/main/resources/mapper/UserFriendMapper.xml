@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.person.friend.dao.UserFriendMapper">
+
+    <select id="listFriend" resultType="friendVO" parameterType="listFriendReq">
+        select
+        u.id, u.user_name, u.user_age, u.phone, u.photo, u.email
+        from sys_user u
+        inner join chat_user_friend f
+        on u.id = f.friend_user_id and f.my_user_id = #{userId}
+        <if test="searchValue != null">
+            where ${searchKey} like concat('%', #{searchValue}  ,'%')
+        </if>
+    </select>
+
+    <select id="countFriend" resultType="java.lang.Integer" parameterType="listFriendReq">
+        select count(1) from sys_user u
+        inner join chat_user_friend f
+        on u.id = f.friend_user_id and f.my_user_id = #{userId}
+        <if test="searchValue != null">
+            where ${searchKey} like concat('%', #{searchValue}  ,'%')
+        </if>
+    </select>
+
+    <select id="findFriendByFriendUserId" resultType="userFriend">
+        select * from chat_user_friend
+        where my_user_id = #{myUserId} and friend_user_id = #{friendUserId}
+    </select>
+
+    <insert id="insertFriend" parameterType="userFriend">
+        insert into chat_user_friend (id, my_user_id, friend_user_id)
+        values (#{id}, #{myUserId}, #{friendUserId} );
+    </insert>
+
+
+</mapper>

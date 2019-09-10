@@ -16,7 +16,7 @@
     </select>
 
     <select id="listUser" resultType="userVO" parameterType="listUserReq">
-        select r.role_name,
+        select r.role_name, r.is_admin admin,
         <include refid="userSql"/>
         from sys_user u
         left join sys_user_role sur on u.id = sur.user_id

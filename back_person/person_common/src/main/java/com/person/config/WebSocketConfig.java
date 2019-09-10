@@ -15,7 +15,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
-        stompEndpointRegistry.addEndpoint("/ws/endpointChat").setAllowedOrigins("*").withSockJS();
+        stompEndpointRegistry.addEndpoint("/ws/endpoint").setAllowedOrigins("*").withSockJS();
     }
 
     @Override
@@ -24,7 +24,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         te.setPoolSize(1);
         te.setThreadNamePrefix("wss-heartbeat-thread-");
         te.initialize();
-        // 10秒 心跳
+        // 10秒心跳 queue和topic表示可以在queue和topic两个域上向客户端发消息
         registry.enableSimpleBroker("/queue","/topic").setHeartbeatValue(new long[]{10000, 10000}).setTaskScheduler(te);
     }
 

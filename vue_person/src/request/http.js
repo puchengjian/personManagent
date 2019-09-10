@@ -57,13 +57,9 @@ axios.interceptors.response.use(data => {
       router.push('/login')
     }, 3000)
     return false
-  } else if (err.response.status !== 200) {
+  } else if (err.response.status === 400 || err.response.status === 401) {
     Message.error({ message: err.response.msg })
   } else {
-    if (err.response.data.msg) {
-      Message.error({ message: err.response.msg })
-    } else {
-      Message.error({ message: '未知错误!' })
-    }
+    Message.error({ message: '服务器异常~' })
   }
 })

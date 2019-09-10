@@ -23,7 +23,7 @@
     </select>
 
     <select id="findUserById" resultType="userVO">
-        select r.id roleId,
+        select r.id roleId, r.is_admin admin,
         <include refid="userSql"/>
         from sys_user u
         left join sys_user_role sur on u.id = sur.user_id

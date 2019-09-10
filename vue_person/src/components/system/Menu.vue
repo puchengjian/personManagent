@@ -55,7 +55,7 @@
           >
             <el-table-column prop="text" label="菜单名称" width="180">
             </el-table-column>
-            <el-table-column prop="path" label="路径" width="140">
+            <el-table-column prop="path" label="路径" width="160">
             </el-table-column>
             <el-table-column prop="component" label="组件" width="140">
             </el-table-column>

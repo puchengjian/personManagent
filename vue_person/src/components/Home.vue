@@ -6,9 +6,9 @@
         <div style="display: flex;align-items: center;margin-right: 7px">
           <el-badge
             style="margin-right: 30px"
-            :is-dot="this.$store.state.nfDot"
+            :is-dot="!this.$store.state.nfDot"
           >
-            <i class="fa fa-bell-o" style="cursor: pointer"></i>
+            <i class="fa fa-bell-o" @click="goChat" style="cursor: pointer"></i>
           </el-badge>
           <el-dropdown @command="handleCommand">
             <span
@@ -85,6 +85,9 @@
 <script>
 export default {
   methods: {
+    goChat () {
+      this.$router.push({ path: '/friend/chat' })
+    },
     handleCommand (cmd) {
       var _this = this
       if (cmd === 'logout') {

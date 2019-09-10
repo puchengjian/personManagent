@@ -13,6 +13,7 @@
         v-model="loginForm.account"
         type="text"
         placeholder="请输入用户名"
+        @keyup.enter.native="login"
       ></el-input>
     </el-form-item>
     <el-form-item prop="password">
@@ -21,6 +22,7 @@
         auto-complete="off"
         type="password"
         placeholder="请输入密码"
+        @keyup.enter.native="login"
       ></el-input>
     </el-form-item>
     <el-checkbox class="login_remember" v-model="checked" label-position="left"

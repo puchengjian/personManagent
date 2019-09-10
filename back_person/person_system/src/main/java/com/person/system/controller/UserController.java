@@ -159,6 +159,7 @@ public class UserController {
     @ApiOperation(value = "删除用户")
     SuccessOrFailure deleteUserById(@PathVariable String id) {
         try {
+            UserVO userVO = userService.findUserById(id);
             boolean flag = userService.deleteUserById(id);
             if (flag)
                 return SuccessOrFailure.SUCCESS("删除成功~");

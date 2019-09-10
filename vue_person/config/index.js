@@ -18,7 +18,7 @@ module.exports = {
                     '^/api': '/api/person/v1'
                 }
             },
-            '/api/chat': {
+            '/api/friend': {
                 target: 'http://127.0.0.1:9292',
                 changeOrigin: true,
                 pathRewrite: {

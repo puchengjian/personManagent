@@ -17,6 +17,9 @@ public class UserVO extends User {
     @ApiModelProperty("角色Id")
     private String roleId;
 
+    @ApiModelProperty("绑定角色是否是超级管理员")
+    private boolean admin;
+
     public String getRoleName() {
         return roleName;
     }
@@ -33,5 +36,11 @@ public class UserVO extends User {
         this.roleId = roleId;
     }
 
+    public boolean isAdmin() {
+        return admin;
+    }
 
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 }
