@@ -31,7 +31,7 @@ public class ShiroSessionManager extends DefaultWebSessionManager {
             return null;
         }
         String token = WebUtils.toHttp(request).getHeader(HEADER_TOKEN_NAME);
-        if (servletRequest.getRequestURI().startsWith("/chat/ws") && StringUtils.isEmpty(token)) {
+        if (servletRequest.getRequestURI().startsWith("/friend/ws") && StringUtils.isEmpty(token)) {
             token = request.getParameter("token");
             log.warn("ws token：{}", token );
         }

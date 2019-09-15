@@ -17,6 +17,7 @@ import com.person.utils.FtpUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,7 @@ public class UserController {
 
     @GetMapping("/user")
     @ApiOperation(value = "查询全部用户", response = UserVO.class)
+    @RequiresPermissions("user:sel")
     SuccessOrFailure listUser(@Valid ListUserReq req) {
         try {
             List<UserVO> users = userService.listUser(req);
@@ -66,6 +68,7 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     @ApiOperation(value = "根据Id查询用户信息", response = UserVO.class)
+    @RequiresPermissions("user:get")
     SuccessOrFailure findUserById(@PathVariable String id) {
         try {
             UserVO user = userService.findUserById(id);
@@ -79,6 +82,7 @@ public class UserController {
 
     @PostMapping("/user")
     @ApiOperation(value = "新增用户")
+    @RequiresPermissions("user:add")
     SuccessOrFailure insertUser(@RequestBody InsertUserReq userReq) {
         try {
             if (userService.findUserByAccount(userReq.getAccount()) != null)
@@ -100,6 +104,7 @@ public class UserController {
 
     @PutMapping("/user")
     @ApiOperation(value = "修改用户")
+    @RequiresPermissions("user:upd")
     SuccessOrFailure updateUserById(@RequestBody UpdateUserReq userReq) {
         try {
             Role role = roleService.findRoleByUserId(userReq.getId());
@@ -122,6 +127,7 @@ public class UserController {
 
     @PutMapping("/photo/user")
     @ApiOperation(value = "修改用户头像")
+    @RequiresPermissions("user:upd")
     SuccessOrFailure updateUserById(@RequestParam(value = "file") MultipartFile file, @RequestParam String userId) {
         boolean flag = false;
         try {
@@ -157,6 +163,7 @@ public class UserController {
 
     @DeleteMapping("/user/{id}")
     @ApiOperation(value = "删除用户")
+    @RequiresPermissions("user:del")
     SuccessOrFailure deleteUserById(@PathVariable String id) {
         try {
             UserVO userVO = userService.findUserById(id);

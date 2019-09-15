@@ -48,7 +48,7 @@
             :data="dataList"
             border
             style="width: 100%"
-            :max-height="580"
+            :max-height="480"
           >
             <el-table-column type="index" fixed width="80"> </el-table-column>
             <!-- <el-table-column type="selection" width="55"> </el-table-column> -->
@@ -79,10 +79,13 @@
             </el-table-column>
           </el-table>
           <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
             :page-sizes="[10, 20, 40, 60, 80, 100]"
             prev-text="上一页"
             next-text="下一页"
-            :page-size="1"
+            :page-size="queryListParam.size"
+            :current-page="queryListParam.page"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
           >
@@ -178,6 +181,14 @@ export default {
       this.dataList = res.data
       this.total = res.total
     },
+    handleSizeChange (val) { // 改变每页大小时触发
+      this.queryListParam.size = val
+      this.getDataList()
+    },
+    handleCurrentChange (val) { // 改变第几页时 触发
+      this.queryListParam.page = val
+      this.getDataList()
+    },
     initEditFormData () {
       this.editFormData = {
         roleName: '',
@@ -213,6 +224,7 @@ export default {
       if (res.status !== 200) return
       this.getDataList()
       this.isTable = true
+      this.initEditFormData()
     },
     async handleEditSave () {
       this.handleLoading(true)
@@ -221,6 +233,7 @@ export default {
       if (res.status !== 200) return
       this.getDataList()
       this.isTable = true
+      this.initEditFormData()
     },
     handleDel (id) {
       this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {

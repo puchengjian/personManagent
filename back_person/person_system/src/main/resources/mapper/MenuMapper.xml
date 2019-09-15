@@ -38,7 +38,6 @@
             where ${searchKey} like concat('%',#{searchValue},'%')
         </if>
         order by m.create_time
-        limit #{page}, #{size}
     </select>
 
     <select id="countMenu" resultType="java.lang.Integer" parameterType="listMenuReq">

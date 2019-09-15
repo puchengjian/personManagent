@@ -45,8 +45,8 @@ public class WsFriendController {
             // 更新好友聊天列表数据
             friendMessageService.sendListToUser(myUserId, friendUserId, "/queue/friend/chat/list");
 
-            boolean result = chatFriendService.findReadByFriendUserId(ShiroService.getId());
-            friendMessageService.sendBooleanToUser(ShiroService.getId(), "/queue/read/friend", result);
+            boolean result = chatFriendService.findReadByFriendUserId(myUserId);
+            friendMessageService.sendBooleanToUser(myUserId, "/queue/read/friend", result);
 
         } catch (Exception e) {
             log.error("发送聊天信息异常:{}", e);

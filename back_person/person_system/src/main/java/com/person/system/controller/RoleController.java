@@ -61,6 +61,7 @@ public class RoleController {
 
     @PostMapping("/role")
     @ApiOperation(value = "新增角色")
+    @RequiresPermissions("role:add")
     SuccessOrFailure insertRole(@RequestBody InsertRoleReq req) {
         try {
             boolean flag = roleService.insertRole(req);
@@ -77,6 +78,7 @@ public class RoleController {
 
     @PutMapping("/role")
     @ApiOperation(value = "修改角色")
+    @RequiresPermissions("role:upd")
     SuccessOrFailure updateRoleById(@RequestBody UpdateRoleReq req) {
         try {
             boolean flag = roleService.updateRoleById(req);
@@ -93,6 +95,7 @@ public class RoleController {
 
     @DeleteMapping("/role/{id}")
     @ApiOperation(value = "删除角色")
+    @RequiresPermissions("role:del")
     SuccessOrFailure deleteRoleById(@PathVariable String id) {
         try {
             boolean flag = roleService.deleteRoleById(id);

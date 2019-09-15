@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel("查询全部菜单参数")
-public class ListMenuReq extends BaseReq {
+public class ListMenuReq {
 
     @ApiModelProperty("搜索字段")
     private String searchKey;

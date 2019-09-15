@@ -51,7 +51,7 @@
             border
             style="width: 100%"
             :tree-props="treeProps"
-            :max-height="580"
+            :max-height="500"
           >
             <el-table-column prop="text" label="菜单名称" width="180">
             </el-table-column>
@@ -102,15 +102,6 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination
-            :page-sizes="[10, 20, 40, 60, 80, 100]"
-            prev-text="上一页"
-            next-text="下一页"
-            :page-size="1"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-          >
-          </el-pagination>
         </div>
 
         <div class="add-content" v-show="!isTable">
@@ -206,12 +197,9 @@ export default {
       isEdit: true, // 新增和编辑操作表示
       dataList: [], // 表格集合
       editFormData: {}, // 表单默认数据结构
-      total: 0,
       queryListParam: { // 查询列表参数列表
         searchKey: 'menu_name',
-        searchValue: '',
-        page: 1,
-        size: 10
+        searchValue: ''
       },
       treeProps: {
         children: 'children'
@@ -249,7 +237,7 @@ export default {
       this.handleLoading(false)
       if (res.status !== 200) return
       this.dataList = res.data
-      this.total = res.total
+      // this.total = res.total
     },
     async handleIsEdit (id) { // 获取修改的菜单数据
       this.handleLoading(true)
@@ -278,6 +266,7 @@ export default {
       if (res.status !== 200) return
       this.getDataList()
       this.isTable = true
+      this.initEditFormData()
     },
     async handleEditSave () { // 修改函数
       this.handleLoading(true)
@@ -286,6 +275,7 @@ export default {
       if (res.status !== 200) return
       this.getDataList()
       this.isTable = true
+      this.initEditFormData()
     },
     handleDel (id) { // 删除菜单提示
       this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {

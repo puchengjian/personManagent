@@ -34,7 +34,6 @@ export default new Vuex.Store({
       window.localStorage.removeItem('user')
       sessionStorage.removeItem('token')
       state.routes = []
-      state.stomp = null
       state.msgList = []
       state.friendList = []
     },
@@ -46,18 +45,20 @@ export default new Vuex.Store({
     },
     updateFriend (state, friend) {
       state.currentFriend = friend
-    },
-    disconnect (state) {
-      if (state.stomp !== null) state.stomp.disconnect()
     }
-
   },
   actions: { // 异步方法
+    disconnect (context) {
+      if (context.state.stomp !== null) {
+        // console.log('断开连接')
+        context.state.stomp.disconnect()
+      }
+    },
     connect (context) {
-      context.commit('disconnect')
+      context.dispatch('disconnect')
       console.log('执行连接')
-      const sock = new SockJS('/ws/endpoint?token=' + sessionStorage.getItem('token'))
       const state = context.state
+      const sock = new SockJS('/ws/endpoint?token=' + sessionStorage.getItem('token'))
       state.stomp = Stomp.over(sock)
       state.stomp.connect({}, frame => {
         state.stomp.subscribe('/user/queue/friend/msg', message => { // 监听好友聊天消息
