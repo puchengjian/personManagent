@@ -102,7 +102,7 @@
               <el-input v-model="editFormData.roleName"></el-input>
               <span class="important">*</span>
             </el-form-item>
-            <el-form-item label="角色名称">
+            <el-form-item label="角色描述">
               <el-input v-model="editFormData.description"></el-input>
               <span class="important">*</span>
             </el-form-item>

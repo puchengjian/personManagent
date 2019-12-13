@@ -57,7 +57,8 @@ public class RoleServiceImpl implements RoleService {
     public boolean insertRole(InsertRoleReq req) {
         req.setId(UUIDUtils.getUUID());
         if (roleMapper.insertRole(req) > 0) {
-            roleMenuService.insertAll(req.getId(), req.getMenuIdList());
+            if (req.getMenuIdList() != null && req.getMenuIdList().size() > 0)
+                roleMenuService.insertAll(req.getId(), req.getMenuIdList());
             return true;
         }
 

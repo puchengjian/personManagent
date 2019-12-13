@@ -3,6 +3,6 @@ server:
 
 spring:
   profiles:
-    active: jdbc, redis, conf, ftp, prod
+    active: jdbc, redis, conf, ftp, dev
   jmx:
     default-domain: system

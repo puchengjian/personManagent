@@ -30,7 +30,7 @@ public class ShiroMap {
         map.put("/swagger-resources/**", "anon");
         map.put("/v2/**", "anon");
         map.put("/webjars/springfox-swagger-ui/**", "anon");
-        map.put("/**", "authc");
+//        map.put("/**", "authc");
 
         return map;
     }

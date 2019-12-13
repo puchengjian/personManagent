@@ -80,7 +80,7 @@ export default new Vuex.Store({
 
         }
       }, failedMsg => {
-        // console.log('失败' + failedMsg)
+        console.log('失败' + failedMsg)
         connect(context)
       })
     }
